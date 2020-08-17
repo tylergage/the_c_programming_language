@@ -1,0 +1,9 @@
+Brain storm some ideas here:
+- Try out some build tools
+- Unit testing, also evaluate some different options
+- There was something over at memfault related to the 
+
+
+GBU Make:
+gcc -o helloworld main.c
+
