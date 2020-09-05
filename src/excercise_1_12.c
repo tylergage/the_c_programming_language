@@ -1,3 +1,12 @@
+/*
+	excercise_1_12.c
+	Created By: Tyler Gage
+	9/5/2020
+	Description: Excercise 1-12 from the book, "C Programming Language"
+	Write a program that prints out its input one word per line, write any line
+	*Assumes all words are only separated by a single space
+*/
+
 #include "excercise_1_12.h"
 
 #define MAX_INPUT 100
@@ -16,8 +25,10 @@ void run_excercise_1_12(void)
 
 	printf("Exercise 1 - 12 :\n %s\n", description_excercise_1_12());
 
+	// Iterate through input
 	while((userInput[i++]=getchar())!='\n')
 	{
+		// Detect end of words, by space (assumption all words are separated by single space)
 		if(userInput[i-1]==' ')
 		{
 			userInput[i-1] = '\n';	
