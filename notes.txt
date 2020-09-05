@@ -7,3 +7,6 @@ Brain storm some ideas here:
 GBU Make:
 gcc -o helloworld main.c
 
+Nice Makefile example I am going to use from here
+https://stackoverflow.com/questions/30573481/path-include-and-src-directory-makefile
+
