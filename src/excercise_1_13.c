@@ -10,12 +10,14 @@
 
 #include "excercise_1_13.h"
 
-#define MAX_INPUT 		100
-#define MAX_WORD_LENGTH 15
-#define MAX_WORDS 		30
-
 static const char* DESCRIPTION = "Write a program to print a histogram of the lengths of words in its input :";
+static const char* EXIT_PROMPT = "DONE";
 
+static wordCounter_t wordTracker[MAX_WORDS];
+
+static void printHistogram(void);
+
+// Public Functions
 const char* description_excercise_1_13(void)
 {
 	return DESCRIPTION;
@@ -23,44 +25,68 @@ const char* description_excercise_1_13(void)
 
 void run_excercise_1_13(void)
 {
-	char userInput[MAX_INPUT];
-	char wordTracker[MAX_WORDS][MAX_WORD_LENGTH];
-	int wordCount,i,j,k;
+	char userInput[MAX_INPUT] = {0};
+	int i = 0;
+	bool wordFound = false;
 
-	// Initialize variables
-	i=j=k=wordCount=0;
+	printf("Exercise 1 - 13 :\n %s\n", description_excercise_1_13());
+	
+	// Iterate through input word by word
+	while(scanf("%s", userInput) != EOF)
+	{
+		// First check it all input is received
+		if(strcmp(userInput,EXIT_PROMPT) == 0) 
+		{
+			printf("Creating histogram >>>>>>\n");
+			break;
+		}
+
+		// Check if word is already in tracker
+		wordFound = false;
+		i=0;
+
+		while(wordFound == false)
+		{
+			if(wordTracker[i].count == 0) // Insert at end of list, new word
+			{
+				strcpy(wordTracker[i].word,userInput);
+				wordTracker[i].count++;
+				wordFound = true;
+			}
+			else if(strcmp(wordTracker[i].word,userInput) == 0) // Add to count if already in list
+			{
+				wordTracker[i].count++;
+				wordFound = true;
+			}
+			i++;
+		}
+	}
+
+	printHistogram();
+}
+
+
+// Private Functions
+static void printHistogram(void)
+{
+	int i,j;
 
 	for(i=0;i<MAX_WORDS;i++)
 	{
-		memset(wordTracker[i], '\0', sizeof(wordTracker[i]));
-	}
-
-	printf("Exercise 1 - 13 :\n %s\n", description_excercise_1_13());
-
-	while((userInput[i++]=getchar())!='\n')
-	{
-		// Check if we are at the end of a word
-		if(userInput[i-1] == ' ')
+		if(wordTracker[i].count == 0) // Check if we are at the end
 		{
-			wordTracker[j][k] = '\n';
-			j++;
-			k=0;
-			wordCount++;
+			printf(">>>>>>>>>>>>>\n");
+			break;
 		}
-		else
+
+		// Print word and bar graph
+		printf("%15s:", wordTracker[i].word);
+		for(j=0;j<wordTracker[i].count;j++)
 		{
-			wordTracker[j][k++] = userInput[i-1];
+			printf("#");
 		}
+		printf("\n");
 	}
 
-	// Need to make sure we account for the last word
-	wordCount++; 
-	wordTracker[j][k] = '\n';
-
-	for(i=0;i<wordCount;i++)
-	{
-		printf("%s",wordTracker[i]);
-	}
-
-	printf("DONE!\n");
 }
+
