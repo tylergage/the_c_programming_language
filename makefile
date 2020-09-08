@@ -5,8 +5,9 @@ OBJ_DIR := obj
 BIN_DIR := bin
 
 EXE := $(BIN_DIR)/c_programming_excercises
+
 SRC := $(wildcard $(SRC_DIR)/*.c)
-OBJ := $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+OBJ := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC))
 
 CPPFLAGS := -Iinclude -MMD -MP
 CFLAGS   := -Wall
