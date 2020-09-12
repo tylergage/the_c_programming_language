@@ -37,7 +37,7 @@ void run_excercise_1_13(void)
 		// First check it all input is received
 		if(strcmp(userInput,EXIT_PROMPT) == 0) 
 		{
-			printf("Creating histogram >>>>>>\n");
+			printf("Creating histogram \n>>>>>>>>>>>>>\n");
 			break;
 		}
 
