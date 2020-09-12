@@ -71,6 +71,8 @@ static void printHistogram(void)
 {
 	int i,j;
 
+	printf("Creating histogram \n>>>>>>>>>>>>>\n");
+
 	for(i=0;i<MAX_WORDS;i++)
 	{
 		if(wordTracker[i].count == 0) // Check if we are at the end

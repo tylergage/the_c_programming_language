@@ -12,6 +12,7 @@
 #define MAX_INPUT 100
 
 static const char* DESCRIPTION = "Write a program that prints out its input one word per line, write any line:";
+static const char* EXIT_PROMPT = "DONE";
 
 const char* description_excercise_1_12(void)
 {
@@ -21,21 +22,21 @@ const char* description_excercise_1_12(void)
 void run_excercise_1_12(void)
 {
 	char userInput[MAX_INPUT];
-	int i=0;
 
 	printf("Exercise 1 - 12 :\n %s\n", description_excercise_1_12());
 
 	// Iterate through input
-	while((userInput[i++]=getchar())!='\n')
+	while(scanf("%s", userInput) != EOF)
 	{
-		// Detect end of words, by space (assumption all words are separated by single space)
-		if(userInput[i-1]==' ')
+		// First check it all input is received
+		if(strcmp(userInput,EXIT_PROMPT) == 0) 
 		{
-			userInput[i-1] = '\n';	
+			break;
 		}
-	}
 
-	printf("%s", userInput);
+		// Print each word as its own line
+		printf("%s\n",userInput );
+	}
 
 	printf("DONE!\n");
 }
