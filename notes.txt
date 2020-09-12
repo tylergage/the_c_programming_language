@@ -10,3 +10,9 @@ gcc -o helloworld main.c
 Nice Makefile example I am going to use from here
 https://stackoverflow.com/questions/30573481/path-include-and-src-directory-makefile
 
+
+Let's think about how we want to setup the user interface. Essentially I want something easily expandable. Just need to put in a name of the user input, and follow that up with a function, etc. 
+
+IDEAS:
+Structure of a string, and a function. 
+Think we need a separate file pair, diagnostics? Or maybe user input. 
