@@ -10,7 +10,7 @@
 
 #include "excercise_1_13.h"
 
-static const char* DESCRIPTION = "Write a program to print a histogram of the lengths of words in its input :";
+static const char* DESCRIPTION = "Write a program to print a histogram of the lengths of words in its input. Enter the word \"DONE\" when finished :";
 static const char* EXIT_PROMPT = "DONE";
 
 static wordCounter_t wordTracker[MAX_WORDS];
@@ -62,6 +62,8 @@ void run_excercise_1_13(void)
 	}
 
 	printHistogram();
+
+	printf("Excercise complete, returning to main menu...\n");
 }
 
 

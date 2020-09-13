@@ -11,7 +11,7 @@
 
 #define MAX_INPUT 100
 
-static const char* DESCRIPTION = "Write a program that prints out its input one word per line, write any line:";
+static const char* DESCRIPTION = "Write a program that prints out its input one word per line, write any input. Enter the word \"DONE\" when finished:";
 static const char* EXIT_PROMPT = "DONE";
 
 const char* description_excercise_1_12(void)
@@ -38,7 +38,7 @@ void run_excercise_1_12(void)
 		printf("%s\n",userInput );
 	}
 
-	printf("DONE!\n");
+	printf("Excercise complete, returning to main menu...\n");
 }
 
 
