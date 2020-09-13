@@ -23,7 +23,7 @@ void run_excercise_1_12(void)
 {
 	char userInput[MAX_INPUT];
 
-	printf("Exercise 1 - 12 :\n %s\n", description_excercise_1_12());
+	printf("Exercise 1 - 12 :\n%s\n", description_excercise_1_12());
 
 	// Iterate through input
 	while(scanf("%s", userInput) != EOF)

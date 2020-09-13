@@ -29,7 +29,7 @@ void run_excercise_1_13(void)
 	int i = 0;
 	bool wordFound = false;
 
-	printf("Exercise 1 - 13 :\n %s\n", description_excercise_1_13());
+	printf("Exercise 1 - 13 :\n%s\n", description_excercise_1_13());
 	
 	// Iterate through input word by word
 	while(scanf("%s", userInput) != EOF)
