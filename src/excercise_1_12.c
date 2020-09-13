@@ -11,19 +11,19 @@
 
 #define MAX_INPUT 100
 
-static const char* DESCRIPTION = "Write a program that prints out its input one word per line, write any input. Enter the word \"DONE\" when finished:";
+static const char* INSTRUCTIONS = "Write a program that prints out its input one word per line, write any input. Enter the word \"DONE\" when finished:";
 static const char* EXIT_PROMPT = "DONE";
 
-const char* description_excercise_1_12(void)
+const char* instruction_excercise_1_12(void)
 {
-	return DESCRIPTION;
+	return INSTRUCTIONS;
 }
 
 void run_excercise_1_12(void)
 {
 	char userInput[MAX_INPUT];
 
-	printf("Exercise 1 - 12 :\n%s\n", description_excercise_1_12());
+	printf("Exercise 1 - 12 :\n%s\n", instruction_excercise_1_12());
 
 	// Iterate through input
 	while(scanf("%s", userInput) != EOF)

@@ -5,12 +5,16 @@
 	Description: Excercise 1-13 from the book, "C Programming Language"
 	Write a program to print a histogram of the lengths of words in its input. 
 	It is easy to draw the histogram with the bars horizontal; a vertical orientation is more challenging.
-	*Assumes all words are only separated by a single space, input starts with first word
+	Note: This is actually incorrect from the book. I was supposed to do lengths, this is dong the individual
+	words. Its actually a little more challenging, so going to leave it as is.
 */
 
 #include "excercise_1_13.h"
 
-static const char* DESCRIPTION = "Write a program to print a histogram of the lengths of words in its input. Enter the word \"DONE\" when finished :";
+#define MAX_INPUT 		100
+#define MAX_WORDS 		100
+
+static const char* INSTRUCTIONS = "Write a program to print a histogram of the lengths of words in its input. Enter the word \"DONE\" when finished :";
 static const char* EXIT_PROMPT = "DONE";
 
 static wordCounter_t wordTracker[MAX_WORDS];
@@ -18,9 +22,9 @@ static wordCounter_t wordTracker[MAX_WORDS];
 static void printHistogram(void);
 
 // Public Functions
-const char* description_excercise_1_13(void)
+const char* instruction_excercise_1_13(void)
 {
-	return DESCRIPTION;
+	return INSTRUCTIONS;
 }
 
 void run_excercise_1_13(void)
@@ -29,7 +33,7 @@ void run_excercise_1_13(void)
 	int i = 0;
 	bool wordFound = false;
 
-	printf("Exercise 1 - 13 :\n%s\n", description_excercise_1_13());
+	printf("Exercise 1 - 13 :\n%s\n", instruction_excercise_1_13());
 	
 	// Iterate through input word by word
 	while(scanf("%s", userInput) != EOF)

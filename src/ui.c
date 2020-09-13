@@ -9,7 +9,9 @@
 
 #include "ui.h"
 
-#define EXIT_PROMPT "EXIT"
+#define MAX_INPUT 100
+
+static const char* EXIT_PROMPT = "EXIT";
 
 void ui(void)
 {
