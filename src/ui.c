@@ -43,12 +43,19 @@ void ui(void)
 		}
 	}
 
-	printf("Exit program, bye!...\n");
+	printf("Closing program... bye!\n");
 }
 
 void ui_info(char* userInput)
 {
-	printf("TODO list out program information\n");
+	printf("The purpose of this program is to demonstrate a" 
+		"number of different programming excercises in the C"
+		"programming language. Questions are taken from different "
+		"books or the internet and chosen on a whim for what I find "
+		"interesting or would serve as a good challenge. There is a "
+		"CLI framework present for navigating different questions "
+		"and excercises. This program is created and maintained "
+		"by Tyler Gage. \n");
 }
 
 void ui_help(char* userInput)
@@ -59,10 +66,12 @@ void ui_help(char* userInput)
 	
 	for(i=0;i<sizeof(commandTable)/sizeof(commandTable[0]);i++)
 	{
-		printf("%s\n", commandTable[i].command);
+		printf("%s: %s\n", 
+			commandTable[i].command,
+			commandTable[i].command_description);
 	}
 
-	printf("%s\n", EXIT_PROMPT);
+	printf("%s: Close program\n", EXIT_PROMPT);
 
 	printf("<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>\n");
 }

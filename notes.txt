@@ -20,11 +20,17 @@ Think we need a separate file pair, diagnostics? Or maybe user input.
 
 Got a decent setup for the GUI, we can still get a couple new files for this.
 
+The purpose of this program is to demonstrate a number of different programming excercises in the C programming language. Questions are taken from different books or the internet and chosen on a whim for what I find interesting or would serve as a good challenge. There is a CLI framework present for navigating different questions and excercises. This program is created and maintained by Tyler Gage. 
+
+
 TODO:
-- move the GUI to its own files
+- move the GUI to its own files DONE
+
 - add descriptions for each command, also add info command
-- message to make it obvious when back in the main menu after the excercises
+- message to make it obvious when back in the main menu after the excercises, clean up excercise instrucions
 - Did not even realize we did 1-13 wrong, its supposed to be lengths, lets fix it
 - Do one more question
+
+- coding standard cleanup
 
 
