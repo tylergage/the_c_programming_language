@@ -6,6 +6,8 @@
 #include "excercise_1_12.h"
 #include "excercise_1_13.h"
 
+#define EXIT_PROMPT "EXIT"
+
 static void gui(void);
 
 int main(int argc, char** argv)
@@ -23,6 +25,13 @@ static void gui(void)
 
 	while(scanf("%s", userInput) != EOF)
 	{
+		// First off, check if user wants to exit and handle
+		if(strcmp(EXIT_PROMPT, userInput) == 0)
+		{
+			break;
+		}
+
+		// Check if command exists in the table, and if found execute function
 		commandFound = false;
 		for(i=0;i<sizeof(commandTable)/sizeof(commandTable[0]);i++)
 		{
@@ -39,6 +48,8 @@ static void gui(void)
 			printf("Unknown command, enter \"help\" for more info\n");
 		}
 	}
+
+	printf("Exit program, bye!...\n");
 }
 
 
@@ -50,12 +61,18 @@ void ui_info(char* userInput)
 
 void ui_help(char* userInput)
 {
-	printf("TODO list out program help\n");
-}
+	int i;
 
-void ui_exit(char* userInput)
-{
-	printf("Exit program, bye!...\n");
+	printf("<<<<<<<< Available commands >>>>>>>>\n");
+	
+	for(i=0;i<sizeof(commandTable)/sizeof(commandTable[0]);i++)
+	{
+		printf("%s\n", commandTable[i].command);
+	}
+
+	printf("%s\n", EXIT_PROMPT);
+
+	printf("<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>\n");
 }
 
 void ui_excercise_1_12(char* userInput)
