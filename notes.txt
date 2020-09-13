@@ -16,3 +16,15 @@ Let's think about how we want to setup the user interface. Essentially I want so
 IDEAS:
 Structure of a string, and a function. 
 Think we need a separate file pair, diagnostics? Or maybe user input. 
+
+
+Got a decent setup for the GUI, we can still get a couple new files for this.
+
+TODO:
+- move the GUI to its own files
+- add descriptions for each command, also add info command
+- message to make it obvious when back in the main menu after the excercises
+- Did not even realize we did 1-13 wrong, its supposed to be lengths, lets fix it
+- Do one more question
+
+
