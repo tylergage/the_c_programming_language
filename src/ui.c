@@ -50,8 +50,8 @@ void ui(void)
 
 void ui_info(char* userInput)
 {
-	printf("The purpose of this program is to demonstrate a" 
-		"number of different programming excercises in the C"
+	printf("The purpose of this program is to demonstrate a " 
+		"number of different programming excercises in the C "
 		"programming language. Questions are taken from different "
 		"books or the internet and chosen on a whim for what I find "
 		"interesting or would serve as a good challenge. There is a "

@@ -27,8 +27,9 @@ TODO:
 - move the GUI to its own files DONE
 - add descriptions for each command, also add info command DONE
 - message to make it obvious when back in the main menu after the excercises, clean up excercise instrucions DONE
+- Did not even realize we did 1-13 wrong, its supposed to be lengths, lets fix it, on second thought leave it DONE
 
-- Did not even realize we did 1-13 wrong, its supposed to be lengths, lets fix it
+
 - Do one more question
 
 - coding standard cleanup
