@@ -87,3 +87,8 @@ void ui_excercise_1_13(char* userInput)
 {
 	run_excercise_1_13();
 }
+
+void ui_cci_1_1(char* userInput)
+{
+	run_cci_excercise_1_1();
+}
