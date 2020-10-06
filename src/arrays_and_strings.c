@@ -38,6 +38,7 @@ void run_cci_excercise_1_1(void)
 	int i=0, j=0;
 	bool duplicateFound = false;
 
+	printf("Example: Input = %s\n", input);
 
 	// BRUTE FORCE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	// Iterate through array to check for duplicate characters
@@ -108,6 +109,8 @@ void run_cci_excercise_1_2(void)
 
 	char* str1 = "abc";
 	char* str2 = "cae";
+
+	printf("Example: String 1 = %s String 2 = %s\n", str1, str2);
 
 	int str1Count[128] = {0};
 	int str2Count[128] = {0};
