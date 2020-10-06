@@ -100,6 +100,47 @@ void run_cci_excercise_1_1(void)
 	{
 		printf("All unique, good to go (Optimized)\n");
 	}
+}
 
+void run_cci_excercise_1_2(void)
+{
+	printf(CCI_1_2_INSTRUCTIONS);
+
+	char* str1 = "abc";
+	char* str2 = "cae";
+
+	int str1Count[128] = {0};
+	int str2Count[128] = {0};
+
+	bool mismatchFound = false;
+
+	// ToDo: Check inputs - lengths of strings, strings same lengths, etc
+
+
+	// Iterate through strings, count frequency of characters
+	for(int i = 0; i<strlen(str1);i++)
+	{
+		str1Count[(int)str1[i]]++;
+		str2Count[(int)str2[i]]++;
+	}
+
+	// Iterate through character counts, to see if they match
+	for(int i = 0; i<sizeof(str1Count)/sizeof(str1Count[0]); i++)
+	{
+		if(str1Count[i] != str2Count[i])
+		{
+			mismatchFound = true;
+			break;
+		}
+	}
+
+	if(mismatchFound == true)
+	{
+		printf("NO, they are not a permutation\n");
+	}
+	else
+	{
+		printf("YES, they are a permutation\n");
+	}
 
 }
