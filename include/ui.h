@@ -14,6 +14,7 @@ void ui(void);
 #define UI_CCI_1_2 "cci-1-2"
 #define UI_CCI_2_1 "cci-2-1"
 #define UI_CCI_5_1 "cci-5-1"
+#define UI_CCI_5_3 "cci-5-3"
 #define UI_INFO "info"
 #define UI_HELP "help"
 
@@ -23,6 +24,7 @@ void ui(void);
 #define DES_CCI_1_2 "Run excercise 1-2 from the book \"Cracking the Coding Interview\""
 #define DES_CCI_2_1 "Run excercise 2-1 from the book \"Cracking the Coding Interview\""
 #define DES_CCI_5_1 "Run excercise 5-1 from the book \"Cracking the Coding Interview\""
+#define DES_CCI_5_3 "Run excercise 5-3 from the book \"Cracking the Coding Interview\""
 #define DESC_INFO "Get more information on this program"
 #define DESC_HELP "List all commands"
 
@@ -32,6 +34,7 @@ void ui_cci_1_1(char* userInput);
 void ui_cci_1_2(char* userInput);
 void ui_cci_2_1(char* userInput);
 void ui_cci_5_1(char* userInput);
+void ui_cci_5_3(char* userInput);
 void ui_info(char* userInput);
 void ui_help(char* userInput);
 
@@ -52,4 +55,5 @@ static const userCommand_t commandTable[] =
 	{UI_CCI_1_2, DES_CCI_1_2, &ui_cci_1_2},
 	{UI_CCI_2_1, DES_CCI_2_1, &ui_cci_2_1},
 	{UI_CCI_5_1, DES_CCI_5_1, &ui_cci_5_1},
+	{UI_CCI_5_3, DES_CCI_5_3, &ui_cci_5_3},
 };
