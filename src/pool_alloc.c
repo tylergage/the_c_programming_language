@@ -12,7 +12,11 @@ static uint8_t g_pool_heap[SIZE_OF_GLOBAL_HEAP_BYTES];
 static size_t g_block_sizes[MAX_BLOCK_SIZES];
 static size_t g_block_size_count;
 
+static uint8_t* g_allocation_ptrs[MAX_BLOCK_SIZES];
+
 static bool heap_initialized = false;
+
+static void pool_print_block_info(uint32_t start, uint32_t length);
 
 // I think we need a tracker for each block size to know next available block, right?
 
@@ -20,12 +24,19 @@ static bool heap_initialized = false;
 bool pool_init(const size_t* block_sizes, size_t block_size_count) { 
 	
 	heap_initialized = false;
+
+	uint8_t* ptr1;
+	uint8_t* ptr2;
 	
 	// Check inputs
 	if(block_size_count > MAX_BLOCK_SIZES)
 	{
+		printf("Error: Too many block sizes, max number of sizes is %u\n", MAX_BLOCK_SIZES);
 		return false;
 	}
+
+	// Clear heap data
+	memset(g_pool_heap, 0, SIZE_OF_GLOBAL_HEAP_BYTES);
 
 	// Save local file data for heap allocator
 	g_block_size_count = block_size_count;
@@ -33,11 +44,44 @@ bool pool_init(const size_t* block_sizes, size_t block_size_count) {
 	for(size_t i=0; i < g_block_size_count; i++)
 	{
 		g_block_sizes[i] = block_sizes[i];
-	}
 
-	// Clear heap data
-	memset(g_pool_heap, 0, SIZE_OF_GLOBAL_HEAP_BYTES);
-	// ToDo: Free any pointer data or handle if this function is called twice?
+		uint32_t numBlocksInZone = ((uint32_t)SIZE_OF_GLOBAL_HEAP_BYTES / (uint32_t)g_block_size_count) / ((uint32_t) g_block_sizes[i] + sizeof(uint8_t*));
+		uint32_t totalBlockSize = g_block_sizes[i] + sizeof(uint8_t*);
+
+		printf("Blocks in Zone: %u, Total Block Size: %u\n",numBlocksInZone, totalBlockSize);
+
+		ptr1 = g_pool_heap + ((uint32_t)SIZE_OF_GLOBAL_HEAP_BYTES / (uint32_t)g_block_size_count)*i;
+	    ptr2 = ptr1 + totalBlockSize + sizeof(uint8_t*);
+
+	    printf("N: ptr1: 0x%X, ptr2: 0x%X\n", ptr1, ptr2);
+	    printf("&: ptr1: 0x%X, ptr2: 0x%X\n", &ptr1, &ptr2);
+	    printf("*: ptr1: 0x%X, ptr2: 0x%X\n", *ptr1, *ptr2);
+
+	    // Initialize allocation pointer for this block used in malloc and free
+	    g_allocation_ptrs[i] = ptr1;
+
+		// Initialize all blocks in the zone
+		for(uint32_t j = 0; j<numBlocksInZone; j++)
+		{
+			// Save pointer in heap
+			memcpy(ptr1, &ptr2, sizeof(uint8_t*));
+
+			// Move pointers to next block, make sure to handle last block which should point to NULL
+			if(j < (numBlocksInZone - 1))
+			{
+				ptr1 = ptr2 - sizeof(uint8_t*);
+				ptr2 = ptr1 + totalBlockSize + sizeof(uint8_t*);	
+			}
+			else
+			{
+				if(ptr2 != NULL)
+				{
+					ptr1 = ptr2 - sizeof(uint8_t*);
+				}
+				ptr2 = NULL;
+			}		
+		}
+	}
 
 	heap_initialized = true;
 
@@ -45,7 +89,59 @@ bool pool_init(const size_t* block_sizes, size_t block_size_count) {
 	return true;
 } 
 
-void* pool_malloc(size_t n) 
+void* pool_malloc(size_t n)
+{
+	uint32_t index=0;
+	bool matchFound=false;
+
+	uint8_t* tempPtr = NULL;
+	void* rtnPtr = NULL;
+
+	// Check that n is a valid size, and find index in saved block sizes
+ 	for(index=0; index < g_block_size_count; index++)
+ 	{
+ 		if(n == g_block_sizes[index])
+ 		{
+ 			matchFound = true;
+ 			break;
+ 		}
+ 	}
+
+ 	if(matchFound == false)
+ 	{
+ 		printf("ERROR: Pool malloc called with an invalid size\n");
+ 		return NULL;
+ 	}
+
+ 	// Check if block zone is completely filled up
+ 	if(g_allocation_ptrs[index] == NULL)
+ 	{
+ 		printf("ERROR: Failed\n");
+ 		// Further improvement could include going to a boundary with blocks
+ 		// that are bigger and use those
+ 	}
+
+ 	// Save return value of allocated data
+ 	rtnPtr = (void*) (g_allocation_ptrs[index] + sizeof(uint8_t*));
+
+ 	printf("0_0 1\n");
+
+ 	// Update allocation pointer to next free element
+ 	memcpy(&tempPtr, &g_allocation_ptrs[index], sizeof(uint8_t*));
+
+ 	printf("0_0 2\n");
+
+ 	// Adjust to point to meta data (next block pointer)
+ 	tempPtr -= sizeof(uint8_t*);
+
+ 	memcpy(&g_allocation_ptrs[index], &tempPtr, sizeof(uint8_t*));
+ 	printf("0_0 3\n");
+
+ 	return rtnPtr;
+
+}
+
+void* pool_malloc_OLD(size_t n) 
 { 
 	bool matchFound = false;
 	bool emptyBlockFound = false;
@@ -55,7 +151,7 @@ void* pool_malloc(size_t n)
 	uint32_t jump=0; // DEBUG remove later
 	uint32_t index=0;
 
- 	// Check that n is a valid size, and find index in saved 
+ 	// Check that n is a valid size, and find index in saved block sizes
  	for(index=0; index < g_block_size_count; index++)
  	{
  		if(n == g_block_sizes[index])
@@ -79,9 +175,7 @@ void* pool_malloc(size_t n)
  	jump = jump / ((uint32_t)g_block_size_count);
  	jump *= index;
 
-
  	// Jump to the right sector for allocation sizes
-
  	ptr += jump;
 
  	cnt = 0; // DEBUG TODO remove later
@@ -128,6 +222,7 @@ void pool_free(void* ptr)
 	// Verify the ptr is not NULL
 	if(ptr == NULL)
 	{
+		printf("Warning: NULL pointer passed to free\n");
 		return;
 	}
 
@@ -148,27 +243,49 @@ void pool_free(void* ptr)
 
 void pool_test(void)
 {
-	const size_t block_sizes[1] = {sizeof(testArray)};
-	size_t block_size_count = 1;
+	const size_t block_sizes[2] = {8, 16};
+	size_t block_size_count = 2;
 
-	testArray* arr1;
-	testArray* arr2;
+	// testArray* arr1;
+	// testArray* arr2;
+	// uint32_t* arr3;
 
 	pool_init(block_sizes, block_size_count);
+	pool_malloc(8);
 
-	arr1 = (testArray*) pool_malloc(sizeof(testArray));
-	arr2 = (testArray*) pool_malloc(sizeof(testArray));
-	arr2 = (testArray*) pool_malloc(sizeof(testArray));
-	arr2 = (testArray*) pool_malloc(sizeof(testArray));
+	//pool_print_block_info(0,100);
+	//pool_print_block_info((uint32_t)SIZE_OF_GLOBAL_HEAP_BYTES / 2,100);
 
-	pool_free(arr2);
-	pool_free(arr2);
-	pool_free(arr1);
+	// arr1 = (testArray*) pool_malloc(sizeof(testArray));
+	// arr2 = (testArray*) pool_malloc(sizeof(testArray));
+	// arr2 = (testArray*) pool_malloc(sizeof(testArray));
+	// arr2 = (testArray*) pool_malloc(sizeof(testArray));
 
-	arr1 = (testArray*) pool_malloc(sizeof(testArray));
-	arr2 = (testArray*) pool_malloc(sizeof(testArray));
-	arr1 = (testArray*) pool_malloc(sizeof(testArray));
-	arr1 = (testArray*) pool_malloc(sizeof(testArray));
+	// pool_free(arr2);
+	// pool_free(arr2);
+	// pool_free(arr1);
+
+	// arr1 = (testArray*) pool_malloc(sizeof(testArray));
+	// arr2 = (testArray*) pool_malloc(sizeof(testArray));
+	// arr1 = (testArray*) pool_malloc(sizeof(testArray));
+	// arr1 = (testArray*) pool_malloc(sizeof(testArray));
+
+	// arr3 = (uint32_t*) pool_malloc(5*sizeof(uint32_t));
+	// arr3 = (uint32_t*) pool_malloc(5*sizeof(uint32_t));
+	// arr3 = (uint32_t*) pool_malloc(5*sizeof(uint32_t));
+	// arr3 = (uint32_t*) pool_malloc(5*sizeof(uint32_t));
+	// arr3 = (uint32_t*) pool_malloc(5*sizeof(uint32_t));
+
+	// pool_free(arr3);
+
+	// arr3 = (uint32_t*) pool_malloc(5*sizeof(uint32_t));
 }
 
 // Private Functions
+static void pool_print_block_info(uint32_t start, uint32_t length)
+{
+	for(uint32_t i=0;i<length;i++)
+	{
+		printf("0x%02X: 0x%02X\n", i+start, g_pool_heap[i+start]);	
+	}
+}

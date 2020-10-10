@@ -47,6 +47,11 @@ typedef struct testArray
 
 
 // Assumptions:
+// Only can allocate 1 of each, I think this is fine
+
+// Potential improvements
+// instead of a byte of meta data, could get space back by just using a bit vector
+// can we align things perfectly to save as much data in the heap as possible?
 
 // Tradeoffs:
 
