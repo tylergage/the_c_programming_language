@@ -53,10 +53,6 @@ bool pool_init(const size_t* block_sizes, size_t block_size_count) {
 		ptr1 = g_pool_heap + ((uint32_t)SIZE_OF_GLOBAL_HEAP_BYTES / (uint32_t)g_block_size_count)*i;
 	    ptr2 = ptr1 + totalBlockSize + sizeof(uint8_t*);
 
-	    printf("N: ptr1: 0x%X, ptr2: 0x%X\n", ptr1, ptr2);
-	    printf("&: ptr1: 0x%X, ptr2: 0x%X\n", &ptr1, &ptr2);
-	    printf("*: ptr1: 0x%X, ptr2: 0x%X\n", *ptr1, *ptr2);
-
 	    // Initialize allocation pointer for this block used in malloc and free
 	    g_allocation_ptrs[i] = ptr1;
 
@@ -116,7 +112,8 @@ void* pool_malloc(size_t n)
  	// Check if block zone is completely filled up
  	if(g_allocation_ptrs[index] == NULL)
  	{
- 		printf("ERROR: Failed\n");
+ 		printf("ERROR: Block zone full\n");
+ 		return NULL;
  		// Further improvement could include going to a boundary with blocks
  		// that are bigger and use those
  	}
@@ -124,18 +121,12 @@ void* pool_malloc(size_t n)
  	// Save return value of allocated data
  	rtnPtr = (void*) (g_allocation_ptrs[index] + sizeof(uint8_t*));
 
- 	printf("0_0 1\n");
-
  	// Update allocation pointer to next free element
  	memcpy(&tempPtr, &g_allocation_ptrs[index], sizeof(uint8_t*));
 
- 	printf("0_0 2\n");
-
  	// Adjust to point to meta data (next block pointer)
  	tempPtr -= sizeof(uint8_t*);
-
  	memcpy(&g_allocation_ptrs[index], &tempPtr, sizeof(uint8_t*));
- 	printf("0_0 3\n");
 
  	return rtnPtr;
 
@@ -212,7 +203,6 @@ void* pool_malloc_OLD(size_t n)
  	{
  		return (void*) ptr+1; // +1 to get pass memory excluding meta data
  	}
-	
 } 
 
 void pool_free(void* ptr) 
