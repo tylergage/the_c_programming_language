@@ -26,8 +26,6 @@ void run_cci_excercise_5_1(void)
 	mask |=  N;
 	mask = mask << pos;
 
-	// Clear bits for M at correct position
-
 
 	// OR Mask with M
 	M |= mask;
@@ -64,6 +62,7 @@ void run_cci_excercise_5_3(void)
 		}
 	}
 
+	// Do one last check if streak was at end of number
 	if(streakTracker > maxStreak)
 		{
 			maxStreak = streakTracker;

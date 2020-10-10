@@ -112,3 +112,8 @@ void ui_cci_5_3(char* userInput)
 {
 	run_cci_excercise_5_3();
 }
+
+void ui_pool_alloc(char* userInput)
+{
+	pool_test();
+}

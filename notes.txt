@@ -31,7 +31,38 @@ TODO:
 
 
 - Do one more question
-
 - coding standard cleanup
 
+Tunable Block Pool Allocator (pool_alloc files instructions)
+Overview 
+For this exercise, you will implement a block pool memory allocator (sometimes also referred to as a slab allocator in kernel programming). 
+This allocator is optimized for allocating objects of certain sizes that are known at initialization time. The allocator is configured by the user with  the set of block sizes that are appropriate for the application (for example, imagine that you know ahead of time that your application will only  ever dynamically allocate 32-byte objects and 1024-byte objects). Internally, the allocator will create block pools for each of those specified sizes.  When client code calls pool_malloc(n), it will receive the smallest block that is both free and greater than or equal to n in size. This sort of  allocator can be very useful in specialized scenarios where the allocation patterns and sizes are well known at initialization time, because it can  make a number of simplifying assumptions to improve performance and metadata overhead. 
+
+Your Challenge 
+We've provided the header; you provide the implementations. Please feel free to make reasonable simplifying assumptions as long as they're  commented and verified in the code. For example, you are allowed to put an upper limit on the maximum number of block sizes that the user is  allowed to specify at initialization time. You can also assume any reasonable subdivision of the total heap amongst the different block sizes (e.g.  evenly divide the total heap by the number of block sizes, or make an assumption that smaller allocations are more common and weight the  partition accordingly, etc). 
+One hard requirement is that you cannot call malloc(); the memory footprint of this allocator library must be fixed. You can, however, add state  variables in addition to the main heap buffer (but if they're unreasonably large, be prepared to defend your decisions!) 
+Please include your test cases in your submission. 
+
+How We Grade This 
+Being correct and bug-free is important; we are building safety-critical systems. At Zipline, your code will be read many times by other engineers,  so it should be concise, easy to read and easy to reason about. The prompt will force you to make assumptions about what the user might want;  we want to see reasonable assumptions that are made deliberately and are documented. We would prefer to see a clean, meticulous approach  with simplifying assumptions, rather than a fancier solution implemented halfway. Efficiency in both space and time are important--we appreciate  if you document intentional tradeoffs you make affecting performance. Comprehensive test cases are important. It’s nice if we can compile the  code and run it, but ideally by reviewing your test cases we will already know whether your implementation works or not. 
+
+
+ *When client code calls pool_malloc(n), it will receive the smallest block that is both free and greater than or equal to n in size.
+
+Hint
+ *you are allowed to put an upper limit on the maximum number of block sizes that the user is  allowed to specify at initialization time
+
+*You can also assume any reasonable subdivision of the total heap amongst the different block sizes (e.g.  evenly divide the total heap by the number of block sizes, or make an assumption that smaller allocations are more common and weight the  partition accordingly, etc). 
+
+
+*You can, however, add state  variables in addition to the main heap buffer (but if they're unreasonably large, be prepared to defend your decisions!) 
+Please include your test cases in your submission. 
+
+*The prompt will force you to make assumptions about what the user might want;  we want to see reasonable assumptions that are made deliberately and are documented.
+
+*We would prefer to see a clean, meticulous approach  with simplifying assumptions, rather than a fancier solution implemented halfway
+
+*Efficiency in both space and time are important--we appreciate  if you document intentional tradeoffs you make affecting performance.
+
+*Comprehensive test cases are important. It’s nice if we can compile the  code and run it, but ideally by reviewing your test cases we will already know whether your implementation works or not. 
 
