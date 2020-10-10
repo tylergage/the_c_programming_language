@@ -8,20 +8,17 @@
 #define SIZE_OF_GLOBAL_HEAP_BYTES 65536
 
 static uint8_t g_pool_heap[SIZE_OF_GLOBAL_HEAP_BYTES]; 
-
 static size_t g_block_sizes[MAX_BLOCK_SIZES];
 static size_t g_block_size_count;
-
 static uint8_t* g_allocation_ptrs[MAX_BLOCK_SIZES];
 
 static bool heap_initialized = false;
 
 static void pool_print_block_info(uint32_t start, uint32_t length);
 
-// I think we need a tracker for each block size to know next available block, right?
-
 // Public Functions
-bool pool_init(const size_t* block_sizes, size_t block_size_count) { 
+bool pool_init(const size_t* block_sizes, size_t block_size_count) 
+{ 
 	
 	heap_initialized = false;
 
@@ -41,14 +38,14 @@ bool pool_init(const size_t* block_sizes, size_t block_size_count) {
 	// Save local file data for heap allocator
 	g_block_size_count = block_size_count;
 
-	for(size_t i=0; i < g_block_size_count; i++)
+	for(uint32_t i=0; i < g_block_size_count; i++)
 	{
 		g_block_sizes[i] = block_sizes[i];
 
 		uint32_t numBlocksInZone = ((uint32_t)SIZE_OF_GLOBAL_HEAP_BYTES / (uint32_t)g_block_size_count) / ((uint32_t) g_block_sizes[i] + sizeof(uint8_t*));
 		uint32_t totalBlockSize = g_block_sizes[i] + sizeof(uint8_t*);
 
-		printf("Blocks in Zone: %u, Total Block Size: %u\n",numBlocksInZone, totalBlockSize);
+		printf("Blocks in Zone: %u, Total Block Size: %u\n", numBlocksInZone, totalBlockSize);
 
 		ptr1 = g_pool_heap + ((uint32_t)SIZE_OF_GLOBAL_HEAP_BYTES / (uint32_t)g_block_size_count)*i;
 	    ptr2 = ptr1 + totalBlockSize + sizeof(uint8_t*);
@@ -80,7 +77,6 @@ bool pool_init(const size_t* block_sizes, size_t block_size_count) {
 	}
 
 	heap_initialized = true;
-
 
 	return true;
 } 
@@ -118,7 +114,7 @@ void* pool_malloc(size_t n)
  		// that are bigger and use those
  	}
 
- 	// Save return value of allocated data
+ 	// Save return value of allocated data for user
  	rtnPtr = (void*) (g_allocation_ptrs[index] + sizeof(uint8_t*));
 
  	// Update allocation pointer to next free element
@@ -129,6 +125,46 @@ void* pool_malloc(size_t n)
  	memcpy(&g_allocation_ptrs[index], &tempPtr, sizeof(uint8_t*));
 
  	return rtnPtr;
+}
+
+void pool_free(void* ptr)
+{
+	void* tempPtr = NULL;
+	bool matchFound=false;
+	uint32_t index=0;
+
+	// Verify lower bound of pointer
+	if((uint8_t*)ptr < g_pool_heap)
+	{
+		printf("Warning: call to pool free was with a pointer not in pool heap\n");
+		return;
+	}
+
+	// Find which zone this pointer is in
+	for(index=1;index<(uint32_t)g_block_sizes;index++)
+	{
+		tempPtr = (void*)g_pool_heap + ((uint32_t)SIZE_OF_GLOBAL_HEAP_BYTES / (uint32_t)g_block_size_count)*index;
+		if(ptr < tempPtr)
+		{
+			printf("Pointer found in zone %u", index); // DEBUG remove later
+			matchFound = true;
+			break;
+		}
+	}
+
+	if(matchFound == false)
+	{
+		printf("Warning: call to pool free was with a pointer not in pool heap\n");
+		return;
+	}
+
+	// Set allocation pointer to the zone being freed, and set next pointer to previously free block
+	memcpy(&tempPtr, &g_allocation_ptrs[index], sizeof(uint8_t*));
+
+	ptr -= sizeof(uint8_t*);
+	g_allocation_ptrs[index] = ptr;
+
+	memcpy(&g_allocation_ptrs[index], &tempPtr, sizeof(uint8_t*));
 
 }
 
@@ -205,7 +241,7 @@ void* pool_malloc_OLD(size_t n)
  	}
 } 
 
-void pool_free(void* ptr) 
+void pool_free_OLD(void* ptr) 
 { 
 	uint8_t* blockMetaPtr;
 
