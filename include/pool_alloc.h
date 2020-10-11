@@ -1,4 +1,12 @@
+#include <stdio.h> 
+#include <stdint.h> 
+#include <stdbool.h> 
+#include <string.h>
+
 // Initialize the pool allocator with a set of block sizes appropriate  for this application. 
+#define MAX_BLOCK_SIZES 10
+#define SIZE_OF_GLOBAL_HEAP_BYTES 65536
+
 // Returns true on success, false on failure. 
 bool pool_init(const size_t* block_sizes, size_t block_size_count); 
 // Allocate n bytes. 
@@ -7,52 +15,24 @@ void* pool_malloc(size_t n);
 // Release allocation pointed to by ptr. 
 void pool_free(void* ptr); 
 
-void pool_test(void);
+// Notes:
+// *	Design implementation really took from this link:
+//  	http://dmitrysoshnikov.com/compilers/writing-a-pool-allocator/
+//		All code however is 100% created by myself, but yeah ripped off the design from that link lol
+// 
+// *	Started with a more brute force solution, allocating a single byte per block to mark
+// 		if a block was free. Would have to iterate blocks, giving an O(N) solution. 
+// 		After a Google search, found the above link and wanted to do that. 
+//		It is certainly more efficient O(1), but you lose a little space in the heap. 
 
+///////// Assumptions:
+// all memory zones split up evenly, could optimize to give smaller sizes more maybe
+// malloc only can allocate 1 block of each memory item at a time
+// free is always passed correct pointer, not checking for that which is something that should be checked
+// Pointer being returned in malloc, data is garbage and not initizlized
 
-
-typedef struct testArray
-{
-	uint8_t arr[32];
-} testArray;
-
-
-// Hint
-// *you are allowed to put an upper limit on the maximum number of block sizes that the user is  allowed to specify at initialization time
-
-// *You can also assume any reasonable subdivision of the total heap amongst the 
-// different block sizes (e.g.  evenly divide the total heap by the number of block 
-// sizes, or make an assumption that smaller allocations are more common and weight 
-// the  partition accordingly, etc). // THIS IS A BIG ONE
-
-// *You can, however, add state  variables in addition to the main heap buffer (but if they're unreasonably large, be prepared to defend your decisions!) 
-// Please include your test cases in your submission. 
-
-// *The prompt will force you to make assumptions about what the user might want;  we want to see reasonable assumptions that are made deliberately and are documented.
-
-// *We would prefer to see a clean, meticulous approach  with simplifying assumptions, rather than a fancier solution implemented halfway
-
-// *Efficiency in both space and time are important--we appreciate  if you document intentional tradeoffs you make affecting performance.
-
-// *Comprehensive test cases are important. It’s nice if we can compile the  code and run it, but ideally by reviewing your test cases we will already know whether your implementation works or not. 
-
-
-// Approach for the heap, 
-// lets say we have 3 different sizes, 1 byte, 32 bytes, 1 KB
-//Idea 1:
-// - Split up evenly, for the entire heap for each size
-// - Going to start with this can make more complex later if needed 
-// 21 KB of each size
-// - How are we going to track these boundaries?
-
-
-// Assumptions:
-// Only can allocate 1 of each, I think this is fine
-
-// Potential improvements
-// instead of a byte of meta data, could get space back by just using a bit vector
+///////// Potential improvements:
+// malloc, can further improve to use blocks of other sizes that are bigger than what was requested if it fills up
+// free could be more robust, if wrong pointer is passed could screw up stack, should do checking
 // can we align things perfectly to save as much data in the heap as possible?
-
-// Tradeoffs:
-
-// Test Cases
+// Probably more test cases I can think of ie, checking data is still valid after multiple malloc and frees called

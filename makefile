@@ -17,6 +17,7 @@ LDLIBS   :=
 .PHONY: all clean
 
 all: $(EXE)
+	bin/c_programming_excercises
 
 $(EXE): $(OBJ) | $(BIN_DIR)
 	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
