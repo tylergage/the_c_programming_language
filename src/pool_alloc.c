@@ -45,7 +45,7 @@ bool pool_init(const size_t* block_sizes, size_t block_size_count)
 		uint32_t numBlocksInZone = ((uint32_t)SIZE_OF_GLOBAL_HEAP_BYTES / (uint32_t)g_block_size_count) / ((uint32_t) g_block_sizes[i] + sizeof(uint8_t*));
 		uint32_t totalBlockSize = g_block_sizes[i] + sizeof(uint8_t*);
 
-		printf("Blocks in Zone: %u, Total Block Size: %u\n", numBlocksInZone, totalBlockSize);
+		printf("Blocks in Zone: %u, Data Block Sizes: %u, Total Block Size: %u\n", numBlocksInZone, g_block_sizes[i], totalBlockSize);
 
 		ptr1 = g_pool_heap + ((uint32_t)SIZE_OF_GLOBAL_HEAP_BYTES / (uint32_t)g_block_size_count)*i;
 	    ptr2 = ptr1 + totalBlockSize + sizeof(uint8_t*);
@@ -77,6 +77,8 @@ bool pool_init(const size_t* block_sizes, size_t block_size_count)
 	}
 
 	heap_initialized = true;
+
+	printf("Heap Pointer = 0x%X, (%d)\n", g_pool_heap, g_pool_heap);
 
 	return true;
 } 
@@ -113,12 +115,15 @@ void* pool_malloc(size_t n)
  		// that are bigger and use those
  	}
 
+ 	printf("Allocation Pointer = 0x%X, (%d) BEFORE MALLOC\n", g_allocation_ptrs[index], g_allocation_ptrs[index]);
  	// Save return value of allocated data for user
  	rtnPtr = (void*) (g_allocation_ptrs[index] + sizeof(uint8_t*));
 
  	// Update allocation pointer to next free element
  	memcpy(&g_allocation_ptrs[index], g_allocation_ptrs[index], sizeof(uint8_t*));
  	g_allocation_ptrs[index] -= sizeof(uint8_t*);
+
+ 	printf("Allocation Pointer = 0x%X, (%d) AFTER MALLOC\n", g_allocation_ptrs[index], g_allocation_ptrs[index]);
 
  	return rtnPtr;
 }
@@ -142,11 +147,13 @@ void pool_free(void* ptr)
 		tempPtr = (void*)g_pool_heap + ((uint32_t)SIZE_OF_GLOBAL_HEAP_BYTES / (uint32_t)g_block_size_count)*index;
 		if(ptr < tempPtr)
 		{
-			printf("Pointer found in zone %u\n", index); // DEBUG remove later
+			printf("Pointer found in zone %u\n", (index-1)); // DEBUG remove later
 			matchFound = true;
 			break;
 		}
 	}
+
+	index--; // Need to decrement for the right zone, its less than next zone boundary
 
 	if(matchFound == false)
 	{
@@ -156,6 +163,8 @@ void pool_free(void* ptr)
 
 	// Set allocation pointer to the zone being freed, and set next pointer to previously free block
 	// Be careful handling offsets of pointer for each block
+	
+	printf("Allocation Pointer = 0x%X, (%d) BEFORE FREE\n", g_allocation_ptrs[index], g_allocation_ptrs[index]);
 	tempPtr = g_allocation_ptrs[index];
 	tempPtr += sizeof(uint8_t*);
 
@@ -163,6 +172,8 @@ void pool_free(void* ptr)
 	g_allocation_ptrs[index] -= sizeof(uint8_t*);
 
 	memcpy(g_allocation_ptrs[index], &tempPtr, sizeof(uint8_t*));
+
+	printf("Allocation Pointer = 0x%X, (%d) AFTER FREE\n", g_allocation_ptrs[index], g_allocation_ptrs[index]);
 
 }
 
@@ -280,13 +291,17 @@ void pool_test(void)
 
 	pool_init(block_sizes, block_size_count);
 
+	printf("Allocate 2 blocks >>>>>>>>>\n");
 	test1 = (uint8_t*) pool_malloc(8);
 	test2 = (uint8_t*) pool_malloc(8);
 	test3 = (uint8_t*) pool_malloc(8);
 
-	test4 = (uint8_t*) pool_malloc(16);
-	test5 = (uint8_t*) pool_malloc(16);
-	test6 = (uint8_t*) pool_malloc(16);
+	printf("Allocate free block 2 >>>>>>>>>\n");
+	pool_free(test2);
+
+	printf("Allocate another block >>>>>>>>>\n");
+	test2 = (uint8_t*) pool_malloc(8);
+
 
 	test1[0] = 0x12;
 	test1[1] = 0x34;
@@ -316,6 +331,7 @@ void pool_test(void)
 	test3[7] = 0xBB;
 
 	pool_print_block_info(0,64);
+	printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n");
 
 	pool_free(test2);
 	test2 = (uint8_t*) pool_malloc(8);
@@ -330,29 +346,45 @@ void pool_test(void)
 	test2[7] = 0xCC;
 
 	pool_print_block_info(0,64);
-
-
-	//pool_free(test1);
-
 	printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n");
-	uint8_t val;
-	uint8_t i;
 
-	val = 0xAB;
-	for(i=0;i<16;i++)
-	{
-		test4[i] = val;
-	}
-	val = 0xCD;
-	for(int i=0;i<16;i++)
-	{
-		test5[i] = val;
-	}
-	val = 0xEF;
-	for(int i=0;i<16;i++)
-	{
-		test6[i] = val;
-	}
+	test4 = (uint8_t*) pool_malloc(8);
+
+	test4[0] = 0xDD;
+	test4[1] = 0xDD;
+	test4[2] = 0xDD;
+	test4[3] = 0xDD;
+	test4[4] = 0xDD;
+	test4[5] = 0xDD;
+	test4[6] = 0xDD;
+	test4[7] = 0xDD;
+
+	pool_print_block_info(0,64);
+	printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n");
+
+
+	// uint8_t val;
+	// uint8_t i;
+
+	// test4 = (uint8_t*) pool_malloc(16);
+	// test5 = (uint8_t*) pool_malloc(16);
+	// test6 = (uint8_t*) pool_malloc(16);
+
+	// val = 0xAB;
+	// for(i=0;i<16;i++)
+	// {
+	// 	test4[i] = val;
+	// }
+	// val = 0xCD;
+	// for(int i=0;i<16;i++)
+	// {
+	// 	test5[i] = val;
+	// }
+	// val = 0xEF;
+	// for(int i=0;i<16;i++)
+	// {
+	// 	test6[i] = val;
+	// }
 
 	// test1 = (uint8_t*) pool_malloc(8);
 
@@ -410,6 +442,6 @@ static void pool_print_block_info(uint32_t start, uint32_t length)
 {
 	for(uint32_t i=0;i<length;i++)
 	{
-		printf("0x%02X: 0x%02X\n", i+start, g_pool_heap[i+start]);	
+		printf("%d: 0x%02X: 0x%02X\n", &g_pool_heap[i+start], i+start, g_pool_heap[i+start]);	
 	}
 }
