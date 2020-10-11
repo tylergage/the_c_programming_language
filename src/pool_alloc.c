@@ -142,7 +142,7 @@ void pool_free(void* ptr)
 		tempPtr = (void*)g_pool_heap + ((uint32_t)SIZE_OF_GLOBAL_HEAP_BYTES / (uint32_t)g_block_size_count)*index;
 		if(ptr < tempPtr)
 		{
-			printf("Pointer found in zone %u", index); // DEBUG remove later
+			printf("Pointer found in zone %u\n", index); // DEBUG remove later
 			matchFound = true;
 			break;
 		}
@@ -155,12 +155,14 @@ void pool_free(void* ptr)
 	}
 
 	// Set allocation pointer to the zone being freed, and set next pointer to previously free block
-	memcpy(&tempPtr, &g_allocation_ptrs[index], sizeof(uint8_t*));
+	// Be careful handling offsets of pointer for each block
+	tempPtr = g_allocation_ptrs[index];
+	tempPtr += sizeof(uint8_t*);
 
-	ptr -= sizeof(uint8_t*);
 	g_allocation_ptrs[index] = ptr;
+	g_allocation_ptrs[index] -= sizeof(uint8_t*);
 
-	memcpy(&g_allocation_ptrs[index], &tempPtr, sizeof(uint8_t*));
+	memcpy(g_allocation_ptrs[index], &tempPtr, sizeof(uint8_t*));
 
 }
 
@@ -272,11 +274,19 @@ void pool_test(void)
 	uint8_t* test2;
 	uint8_t* test3;
 
+	uint8_t* test4;
+	uint8_t* test5;
+	uint8_t* test6;
+
 	pool_init(block_sizes, block_size_count);
 
 	test1 = (uint8_t*) pool_malloc(8);
 	test2 = (uint8_t*) pool_malloc(8);
 	test3 = (uint8_t*) pool_malloc(8);
+
+	test4 = (uint8_t*) pool_malloc(16);
+	test5 = (uint8_t*) pool_malloc(16);
+	test6 = (uint8_t*) pool_malloc(16);
 
 	test1[0] = 0x12;
 	test1[1] = 0x34;
@@ -306,9 +316,43 @@ void pool_test(void)
 	test3[7] = 0xBB;
 
 	pool_print_block_info(0,64);
+
+	pool_free(test2);
+	test2 = (uint8_t*) pool_malloc(8);
+
+	test2[0] = 0xCC;
+	test2[1] = 0xCC;
+	test2[2] = 0xCC;
+	test2[3] = 0xCC;
+	test2[4] = 0xCC;
+	test2[5] = 0xCC;
+	test2[6] = 0xCC;
+	test2[7] = 0xCC;
+
+	pool_print_block_info(0,64);
+
+
 	//pool_free(test1);
 
 	printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n");
+	uint8_t val;
+	uint8_t i;
+
+	val = 0xAB;
+	for(i=0;i<16;i++)
+	{
+		test4[i] = val;
+	}
+	val = 0xCD;
+	for(int i=0;i<16;i++)
+	{
+		test5[i] = val;
+	}
+	val = 0xEF;
+	for(int i=0;i<16;i++)
+	{
+		test6[i] = val;
+	}
 
 	// test1 = (uint8_t*) pool_malloc(8);
 
