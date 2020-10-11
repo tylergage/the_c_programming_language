@@ -86,7 +86,6 @@ void* pool_malloc(size_t n)
 	uint32_t index=0;
 	bool matchFound=false;
 
-	uint8_t* tempPtr = NULL;
 	void* rtnPtr = NULL;
 
 	// Check that n is a valid size, and find index in saved block sizes
@@ -118,11 +117,8 @@ void* pool_malloc(size_t n)
  	rtnPtr = (void*) (g_allocation_ptrs[index] + sizeof(uint8_t*));
 
  	// Update allocation pointer to next free element
- 	memcpy(&tempPtr, &g_allocation_ptrs[index], sizeof(uint8_t*));
-
- 	// Adjust to point to meta data (next block pointer)
- 	tempPtr -= sizeof(uint8_t*);
- 	memcpy(&g_allocation_ptrs[index], &tempPtr, sizeof(uint8_t*));
+ 	memcpy(&g_allocation_ptrs[index], g_allocation_ptrs[index], sizeof(uint8_t*));
+ 	g_allocation_ptrs[index] -= sizeof(uint8_t*);
 
  	return rtnPtr;
 }
@@ -272,12 +268,64 @@ void pool_test(void)
 	const size_t block_sizes[2] = {8, 16};
 	size_t block_size_count = 2;
 
-	// testArray* arr1;
-	// testArray* arr2;
-	// uint32_t* arr3;
+	uint8_t* test1;
+	uint8_t* test2;
+	uint8_t* test3;
 
 	pool_init(block_sizes, block_size_count);
-	pool_malloc(8);
+
+	test1 = (uint8_t*) pool_malloc(8);
+	test2 = (uint8_t*) pool_malloc(8);
+	test3 = (uint8_t*) pool_malloc(8);
+
+	test1[0] = 0x12;
+	test1[1] = 0x34;
+	test1[2] = 0x56;
+	test1[3] = 0x78;
+	test1[4] = 0x9A;
+	test1[5] = 0xBC;
+	test1[6] = 0xDE;
+	test1[7] = 0xFF;
+
+	test2[0] = 0xAA;
+	test2[1] = 0xAA;
+	test2[2] = 0xAA;
+	test2[3] = 0xAA;
+	test2[4] = 0xAA;
+	test2[5] = 0xAA;
+	test2[6] = 0xAA;
+	test2[7] = 0xAA;
+
+	test3[0] = 0xBB;
+	test3[1] = 0xBB;
+	test3[2] = 0xBB;
+	test3[3] = 0xBB;
+	test3[4] = 0xBB;
+	test3[5] = 0xBB;
+	test3[6] = 0xBB;
+	test3[7] = 0xBB;
+
+	pool_print_block_info(0,64);
+	//pool_free(test1);
+
+	printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n");
+
+	// test1 = (uint8_t*) pool_malloc(8);
+
+	// test1[7] = 0x12;
+	// test1[6] = 0x34;
+	// test1[5] = 0x56;
+	// test1[4] = 0x78;
+	// test1[3] = 0x9A;
+	// test1[2] = 0xBC;
+	// test1[1] = 0xDE;
+	// test1[0] = 0xFF;
+
+	// pool_print_block_info(0,24);
+	// pool_free(test1);
+
+
+	//pool_malloc(8);
 
 	//pool_print_block_info(0,100);
 	//pool_print_block_info((uint32_t)SIZE_OF_GLOBAL_HEAP_BYTES / 2,100);
@@ -305,6 +353,12 @@ void pool_test(void)
 	// pool_free(arr3);
 
 	// arr3 = (uint32_t*) pool_malloc(5*sizeof(uint32_t));
+
+
+	// Test Case 1
+	// Normal case, 5 different sizes
+	// Able to allocate each one
+	//
 }
 
 // Private Functions
