@@ -1,6 +1,6 @@
 #include "linked_lists.h"
 
-static void generateDummyLinkedList(void);
+static void generateDummyLinkedList(uint16_t numNodes, uint16_t maxVal);
 static void printDummyLinkedList(void);
 static void freeDummyLinkedList(void);
 
@@ -9,19 +9,51 @@ static Node* listHead = NULL;
 ////////// Public Functions //////////
 void run_cci_excercise_2_1(void)
 {
+	Node* currNode;
+	Node* runnerNode;
+	Node* tempNode;
+
 	printf(CCI_2_1_INSTRUCTIONS);
 	
-	generateDummyLinkedList();
-
+	generateDummyLinkedList(20, 5);
+	printf("BEFORE: \n");
 	printDummyLinkedList();
 
+	currNode = listHead;
+
+	// For each node check all other nodes for matches
+	while(currNode != NULL)
+	{
+		runnerNode = currNode;
+
+		while(runnerNode->next != NULL)
+		{
+			// Remove node if it matches
+			if(runnerNode->next->data == currNode->data)
+			{
+				tempNode = runnerNode->next;
+				runnerNode->next = runnerNode->next->next;
+
+				// Make sure to free allocated data
+				free(tempNode);
+			}
+			else
+			{
+				runnerNode = runnerNode->next;
+			}
+		}
+		currNode = currNode->next;
+	}
+
+	printf("AFTER: \n");
+	printDummyLinkedList();
 	freeDummyLinkedList();
 }
 
 ////////// Private Functions //////////
 
 // Create a dummy single linked list for problems
-static void generateDummyLinkedList(void)
+static void generateDummyLinkedList(uint16_t numNodes, uint16_t maxVal)
 {
 	Node* nodePtr = NULL;
 
@@ -30,20 +62,20 @@ static void generateDummyLinkedList(void)
 
 	// Create node head
 	nodePtr = (Node*) malloc(sizeof(Node));
-	nodePtr->data = rand();
+	nodePtr->data = rand()%(maxVal+1);
 	nodePtr->next = NULL;
 
 	listHead = nodePtr;
 
 	// Create rest of list
-	for(int i=0;i< NUM_OF_NODES - 1;i++)
+	for(int i=0;i< numNodes - 1;i++)
 	{
 		// Create next node
 		nodePtr->next = (Node*) malloc(sizeof(Node));
 		nodePtr = nodePtr->next;
 		
 		// Polulate Data
-		nodePtr->data = rand();
+		nodePtr->data = rand()%(maxVal+1);
 		nodePtr->next = NULL;
 
 	}
