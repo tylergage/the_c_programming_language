@@ -50,9 +50,49 @@ void run_cci_excercise_2_1(void)
 	freeDummyLinkedList();
 }
 
+void run_cci_excercise_2_2(void)
+{
+	int input; 
+	int listLength;
+
+	Node *runner;
+
+	printf(CCI_2_2_INSTRUCTIONS);
+	
+	generateDummyLinkedList(20, 50);
+	printf("List: \n");
+	printDummyLinkedList();
+	
+	printf("Enter element # from last:\n");
+	scanf("%d", &input);
+
+	// Measure out how long linked list is
+	runner = listHead;
+	listLength = 1;
+
+	while(runner->next != NULL)
+	{
+		runner = runner->next;
+		listLength++;
+	}
+
+	printf("List Length: %d\n", listLength);
+
+	// Iterate to position
+	runner = listHead;
+
+	for(int i=0;i<(listLength - input);i++)
+	{
+		runner = runner->next;
+	}
+
+	printf("Data: %d\n", runner->data);
+
+	freeDummyLinkedList();
+}
 ////////// Private Functions //////////
 
-// Create a dummy single linked list for problems
+// Create a dummy single linked list for problems, random values
 static void generateDummyLinkedList(uint16_t numNodes, uint16_t maxVal)
 {
 	Node* nodePtr = NULL;
