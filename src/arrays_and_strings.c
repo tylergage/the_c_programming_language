@@ -13,7 +13,6 @@
 #define MAX_USER_INPUT 100
 
 static bool isWhiteSpace(char c);
-static char * mGetLine(char * line);
 
 void run_cci_excercise_1_1(void)
 {
@@ -190,6 +189,7 @@ void run_cci_excercise_1_3(void)
 
 	inputUrl[j] = '\0';
 
+	printf("Output:\n");
 	printf("%s\n", inputUrl);
 }
 
