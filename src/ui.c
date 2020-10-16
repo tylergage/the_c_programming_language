@@ -11,7 +11,7 @@
 
 #define MAX_INPUT 100
 
-static const char* EXIT_PROMPT = "EXIT";
+static const char* EXIT_PROMPT = "e";
 
 void ui(void)
 {

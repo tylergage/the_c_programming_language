@@ -3,6 +3,6 @@
 
 int main(int argc, char** argv)
 {
-	printf("Welcome to C Programming Excercises!\n");
+	printf("Welcome to C Programming Excercises! Type \"help\" to get started\n");
 	ui();
 }
