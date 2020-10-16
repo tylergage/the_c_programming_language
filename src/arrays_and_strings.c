@@ -10,6 +10,11 @@
 #include <stdbool.h>
 #include <string.h>
 
+#define MAX_USER_INPUT 100
+
+static bool isWhiteSpace(char c);
+static char * mGetLine(char * line);
+
 void run_cci_excercise_1_1(void)
 {
 	printf(CCI_1_1_INSTRUCTIONS);
@@ -145,5 +150,60 @@ void run_cci_excercise_1_2(void)
 	{
 		printf("YES, they are a permutation\n");
 	}
+}
 
+void run_cci_excercise_1_3(void)
+{
+	char input[MAX_USER_INPUT] = "Mr Jon Smith  y 	h  ";
+	char inputUrl[MAX_USER_INPUT];
+	const char* whiteSpaceReplacement = "%20";
+
+	int j=0;
+
+	printf("Example string to URLify:\n");
+	printf("%s\n", input);
+
+	for(int i=0;i<strlen(input);i++)
+	{
+		if(isWhiteSpace(input[i]))
+		{
+			// Increment until we get to next non white space
+			while(isWhiteSpace(input[i])) 
+			{
+				i++;
+			}
+
+			if(i<strlen(input))
+			{
+				// Put %20 in URL version of string
+				memcpy(&inputUrl[j], whiteSpaceReplacement, strlen(whiteSpaceReplacement));
+				j+=strlen(whiteSpaceReplacement);
+			}
+			else
+			{
+				break;
+			}
+		}
+			
+		inputUrl[j++] = input[i];
+	}
+
+	inputUrl[j] = '\0';
+
+	printf("%s\n", inputUrl);
+}
+
+
+
+static bool isWhiteSpace(char c)
+{
+	if( c == ' '  ||
+		c == '\t')
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }

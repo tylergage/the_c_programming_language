@@ -13,6 +13,7 @@ void ui(void);
 #define UI_EXCERCISE_1_13 "1-13"
 #define UI_CCI_1_1 "cci-1-1"
 #define UI_CCI_1_2 "cci-1-2"
+#define UI_CCI_1_3 "cci-1-3"
 #define UI_CCI_2_1 "cci-2-1"
 #define UI_CCI_2_2 "cci-2-2"
 #define UI_CCI_5_1 "cci-5-1"
@@ -25,6 +26,7 @@ void ui(void);
 #define DESC_EXCERCISE_1_13 "Run excercise 1-13 from the book \"C Programming Language\""
 #define DESC_CCI_1_1 "Run excercise 1-1 from the book \"Cracking the Coding Interview\""
 #define DESC_CCI_1_2 "Run excercise 1-2 from the book \"Cracking the Coding Interview\""
+#define DESC_CCI_1_3 "Run excercise 1-3 from the book \"Cracking the Coding Interview\""
 #define DESC_CCI_2_1 "Run excercise 2-1 from the book \"Cracking the Coding Interview\""
 #define DESC_CCI_2_2 "Run excercise 2-2 from the book \"Cracking the Coding Interview\""
 #define DESC_CCI_5_1 "Run excercise 5-1 from the book \"Cracking the Coding Interview\""
@@ -37,6 +39,7 @@ void ui_excercise_1_12(char* userInput);
 void ui_excercise_1_13(char* userInput);
 void ui_cci_1_1(char* userInput);
 void ui_cci_1_2(char* userInput);
+void ui_cci_1_3(char* userInput);
 void ui_cci_2_1(char* userInput);
 void ui_cci_2_2(char* userInput);
 void ui_cci_5_1(char* userInput);
@@ -60,6 +63,7 @@ static const userCommand_t commandTable[] =
 	{UI_EXCERCISE_1_13, DESC_EXCERCISE_1_13, &ui_excercise_1_13},
 	{UI_CCI_1_1, DESC_CCI_1_1, &ui_cci_1_1},
 	{UI_CCI_1_2, DESC_CCI_1_2, &ui_cci_1_2},
+	{UI_CCI_1_3, DESC_CCI_1_3, &ui_cci_1_3},
 	{UI_CCI_2_1, DESC_CCI_2_1, &ui_cci_2_1},
 	{UI_CCI_2_2, DESC_CCI_2_2, &ui_cci_2_2},
 	{UI_CCI_5_1, DESC_CCI_5_1, &ui_cci_5_1},
