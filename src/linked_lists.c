@@ -90,6 +90,13 @@ void run_cci_excercise_2_2(void)
 
 	freeDummyLinkedList();
 }
+
+void run_cci_excercise_2_3(void)
+{
+	printf(CCI_2_3_INSTRUCTIONS);
+
+}
+
 ////////// Private Functions //////////
 
 // Create a dummy single linked list for problems, random values

@@ -156,8 +156,9 @@ void run_cci_excercise_1_3(void)
 	char input[MAX_USER_INPUT] = "Mr Jon Smith  y 	h  ";
 	char inputUrl[MAX_USER_INPUT];
 	const char* whiteSpaceReplacement = "%20";
-
 	int j=0;
+
+	printf(CCI_1_3_INSTRUCTIONS);
 
 	printf("Example string to URLify:\n");
 	printf("%s\n", input);
@@ -193,7 +194,10 @@ void run_cci_excercise_1_3(void)
 	printf("%s\n", inputUrl);
 }
 
-
+void run_cci_excercise_1_4(void)
+{
+	printf(CCI_1_4_INSTRUCTIONS);
+}
 
 static bool isWhiteSpace(char c)
 {

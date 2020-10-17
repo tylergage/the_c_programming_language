@@ -71,3 +71,7 @@ void run_cci_excercise_5_3(void)
 	printf("Max Streak: %d\n", maxStreak);
 }
 
+void run_cci_excercise_5_4(void)
+{
+
+}

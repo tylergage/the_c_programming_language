@@ -103,6 +103,11 @@ void ui_cci_1_3(char* userInput)
 	run_cci_excercise_1_3();
 }
 
+void ui_cci_1_4(char* userInput)
+{
+	run_cci_excercise_1_4();
+}
+
 void ui_cci_2_1(char* userInput)
 {
 	run_cci_excercise_2_1();
@@ -113,6 +118,11 @@ void ui_cci_2_2(char* userInput)
 	run_cci_excercise_2_2();
 }
 
+void ui_cci_2_3(char* userInput)
+{
+	run_cci_excercise_2_3();
+}
+
 void ui_cci_5_1(char* userInput)
 {
 	run_cci_excercise_5_1();
@@ -121,6 +131,11 @@ void ui_cci_5_1(char* userInput)
 void ui_cci_5_3(char* userInput)
 {
 	run_cci_excercise_5_3();
+}
+
+void ui_cci_5_4(char* userInput)
+{
+	run_cci_excercise_5_4();
 }
 
 void ui_pool_alloc(char* userInput)

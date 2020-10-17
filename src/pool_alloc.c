@@ -1,6 +1,6 @@
 #include <pool_alloc.h> 
 
-#if 0
+#if 1
   #define DEBUG_PRINT(a) printf a
 #else
   #define DEBUG_PRINT(a) (void)0
@@ -94,20 +94,21 @@ void* pool_malloc(size_t n)
  		// that are bigger and use those
  	}
 
- 	DEBUG_PRINT(("Allocation Pointer = 0x%X, (%d) BEFORE MALLOC\n", (unsigned int) g_allocation_ptrs[index], (unsigned int) g_allocation_ptrs[index]));
+ 	DEBUG_PRINT(("Allocation Pointer = 0x%X, (%d) BEFORE MALLOC, ", (unsigned int) g_allocation_ptrs[index], (unsigned int) g_allocation_ptrs[index]));
+
  	// Save return value of allocated data for user
  	rtnPtr = (void*) (g_allocation_ptrs[index] + sizeof(uint8_t*));
 
  	// Update allocation pointer to next free element
  	memcpy(&g_allocation_ptrs[index], g_allocation_ptrs[index], sizeof(uint8_t*));
 
- 	// Make sure to properly handle situation where we are filling up a zone
+ 	// Check if we are at the last block, do not adjust the pointer val, NULL indicates we are full
  	if(g_allocation_ptrs[index] != NULL)
  	{
-		g_allocation_ptrs[index] -= sizeof(uint8_t*); // want to point to the meta data
+ 		g_allocation_ptrs[index] -= sizeof(uint8_t*); // want to point to the meta data
  	}
 
- 	DEBUG_PRINT(("Allocation Pointer = 0x%X, (%d) AFTER MALLOC\n", (unsigned int) g_allocation_ptrs[index], (unsigned int) g_allocation_ptrs[index]));
+ 	DEBUG_PRINT(("Allocation Pointer = 0x%X, (%d) AFTER MALLOC, ", (unsigned int) g_allocation_ptrs[index], (unsigned int) g_allocation_ptrs[index]));
 
  	return rtnPtr;
 }
@@ -138,16 +139,15 @@ void pool_free(void* ptr)
 		}
 	}
 
-	index--; // Need to decrement for the right zone, its less than next zone boundary
-
 	if(matchFound == false)
 	{
 		printf("Warning: call to pool free was with a pointer not in pool heap\n");
 		return;
 	}
 
+	index--; // Need to decrement for the right zone, its less than next zone boundary
+
 	// Set allocation pointer to the zone being freed, and set next pointer to previously free block
-	// Be careful handling offsets of pointer for each block
 	DEBUG_PRINT(("Allocation Pointer = 0x%X, (%d) BEFORE FREE\n", (unsigned int) g_allocation_ptrs[index], (unsigned int) g_allocation_ptrs[index]));
 	tempPtr = g_allocation_ptrs[index];
 	tempPtr += sizeof(uint8_t*);
