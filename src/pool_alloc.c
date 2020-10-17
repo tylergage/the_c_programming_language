@@ -49,28 +49,12 @@ bool pool_init(const size_t* block_sizes, size_t block_size_count)
 	    g_allocation_ptrs[i] = ptr1;
 
 		// Initialize all blocks in the zone
-		for(uint32_t j = 0; j<numBlocksInZone; j++)
+		for(uint32_t j = 0; j<numBlocksInZone-1; j++)
 		{
-			// Save pointer in heap
-			if(ptr2 != NULL)
-			{
-				memcpy(ptr1, &ptr2, sizeof(uint8_t*));
-			}
+			memcpy(ptr1, &ptr2, sizeof(uint8_t*));
 
-			// Move pointers to next block, make sure to handle last block which should point to NULL
-			if(j < (numBlocksInZone-2))
-			{
-				ptr1 = ptr2 - sizeof(uint8_t*);
-				ptr2 = ptr1 + totalBlockSize + sizeof(uint8_t*);	
-			}
-			else
-			{
-				if(ptr2 != NULL)
-				{
-					ptr1 = ptr2 - sizeof(uint8_t*);
-				}
-				ptr2 = NULL;
-			}		
+			ptr1+=totalBlockSize;
+			ptr2+=totalBlockSize;
 		}
 	}
 
