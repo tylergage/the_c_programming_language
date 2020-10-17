@@ -73,7 +73,7 @@ void run_cci_excercise_5_3(void)
 
 void run_cci_excercise_5_4(void)
 {
-	uint32_t input = 0xAAAAAAFF;
+	uint32_t input = 13948;
 	bool foundSmallestGreater = false;
 	bool foundSmallestLesser = false;
 	uint32_t smallestGreater = 0;
@@ -85,7 +85,7 @@ void run_cci_excercise_5_4(void)
 
 	printf(CCI_5_4_INSTRUCTIONS);
 
-	printf("Example: %X\n", input);
+	printf("Example: 0x%X (%d)\n", input, input);
 
 	// Count up the number of set bits
 	for(int i=0;i<sizeof(input)*8;i++)
@@ -134,6 +134,6 @@ void run_cci_excercise_5_4(void)
 
 	}
 
-	printf("Smallest Greater: %X\n", smallestGreater);
-	printf("Smallest Lesser: %X\n", smallestLesser);
+	printf("Smallest Greater: 0x%X (%d)\n", smallestGreater, smallestGreater);
+	printf("Smallest Lesser: 0x%X (%d)\n", smallestLesser, smallestLesser);
 }
