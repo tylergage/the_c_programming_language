@@ -11,8 +11,10 @@
 #include <string.h>
 
 #define MAX_USER_INPUT 100
+#define NUMBER_OF_LETTERS_IN_ALPHABET 26
 
 static bool isWhiteSpace(char c);
+static bool isLetter(char c);
 
 void run_cci_excercise_1_1(void)
 {
@@ -197,6 +199,90 @@ void run_cci_excercise_1_3(void)
 void run_cci_excercise_1_4(void)
 {
 	printf(CCI_1_4_INSTRUCTIONS);
+	char* input = "tact coa";
+	int letterFrequency[NUMBER_OF_LETTERS_IN_ALPHABET] = {0};
+	int numberOfLetters;
+	bool isPalindrom;
+	bool foundSingleOddFrequ;
+
+	printf("Example: %s\n", input);
+
+	// Count frequency of each character, and total count
+	numberOfLetters = 0;
+	memset(letterFrequency, 0, sizeof(letterFrequency));
+
+	for(int i=0;i<strlen(input);i++)
+	{
+		if(isLetter(input[i]))
+		{
+			++numberOfLetters;
+			++letterFrequency[(int)input[i] - 'a'];
+		}
+	}
+	
+	isPalindrom = true;
+	foundSingleOddFrequ = false;
+
+	if(numberOfLetters%2 == 0) // If length is even, all frequencies must be even
+	{
+		for(int i=0;i<NUMBER_OF_LETTERS_IN_ALPHABET;i++)
+		{
+			if(letterFrequency[i]%2 != 0)
+			{
+				isPalindrom = false;
+				break;
+			}
+		}
+	}
+	else // If length is odd, one letter must be odd, others even
+	{
+		for(int i=0;i<NUMBER_OF_LETTERS_IN_ALPHABET;i++)
+		{
+			if(letterFrequency[i]%2 != 0)
+			{
+				if(foundSingleOddFrequ == false)
+				{
+					foundSingleOddFrequ = true;
+				}
+				else
+				{
+					isPalindrom = false;
+					break;
+				}
+			}
+		}
+
+		if(foundSingleOddFrequ == false)
+		{
+			isPalindrom = false;
+		}
+	}
+
+	// Print outcome to user
+	if(isPalindrom == true)
+	{
+		printf("YES, this is a palindrome\n");
+	}
+	else
+	{
+		{
+		printf("NO, this is not a palindrome\n");
+	}
+	}
+
+
+}
+
+static bool isLetter(char c)
+{
+	if(c >= 'a' && c <= 'z')
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 static bool isWhiteSpace(char c)
