@@ -91,10 +91,79 @@ void run_cci_excercise_2_2(void)
 	freeDummyLinkedList();
 }
 
-void run_cci_excercise_2_3(void)
+void run_cci_excercise_2_4(void)
 {
-	printf(CCI_2_3_INSTRUCTIONS);
+	int partition = 5;
+	Node* runner;
+	Node* greaterHead;
+	Node* lesserHead;
+	Node* greaterLast;
+	Node* lesserLast;
+	Node* tempNode;
 
+	printf(CCI_2_4_INSTRUCTIONS);
+	printf("Example Partition Value = %d\n", partition);
+	
+	generateDummyLinkedList(7, 10);
+
+	printf("Before: \n");
+	printDummyLinkedList();
+
+	// Initialize pointers
+	runner = listHead;
+	
+	// Create 2 lists, one before partition and one after
+	greaterHead = NULL;
+	lesserHead = NULL;
+	greaterLast = NULL;
+	lesserLast = NULL;
+
+	while(runner != NULL)
+	{
+		tempNode = runner->next;
+
+		// Add node to appropriate list
+		if(runner->data >= partition)
+		{
+			if(greaterLast == NULL)
+			{
+				greaterHead = runner;
+				greaterLast = runner;
+				runner->next = NULL;
+			}
+			else
+			{
+				greaterLast->next = runner;
+				runner->next = NULL;
+				greaterLast = runner;
+
+			}
+		}
+		else
+		{
+			if(lesserLast == NULL)
+			{
+				lesserHead = runner;
+				lesserLast = runner;
+				runner->next = NULL;
+			}
+			else
+			{
+				lesserLast->next = runner;
+				runner->next = NULL;
+				lesserLast = runner;
+			}
+		}
+
+		runner = tempNode;
+	}
+
+	// Combine lists
+	lesserLast->next = greaterHead;
+	listHead = lesserHead;
+
+	printf("After: \n");
+	printDummyLinkedList();
 }
 
 ////////// Private Functions //////////

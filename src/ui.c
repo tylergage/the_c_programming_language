@@ -118,9 +118,9 @@ void ui_cci_2_2(char* userInput)
 	run_cci_excercise_2_2();
 }
 
-void ui_cci_2_3(char* userInput)
+void ui_cci_2_4(char* userInput)
 {
-	run_cci_excercise_2_3();
+	run_cci_excercise_2_4();
 }
 
 void ui_cci_5_1(char* userInput)
