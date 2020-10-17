@@ -136,7 +136,6 @@ void run_cci_excercise_2_4(void)
 				greaterLast->next = runner;
 				runner->next = NULL;
 				greaterLast = runner;
-
 			}
 		}
 		else

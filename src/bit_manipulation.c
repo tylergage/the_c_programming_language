@@ -73,5 +73,67 @@ void run_cci_excercise_5_3(void)
 
 void run_cci_excercise_5_4(void)
 {
+	uint32_t input = 0xAAAAAAFF;
+	bool foundSmallestGreater = false;
+	bool foundSmallestLesser = false;
+	uint32_t smallestGreater = 0;
+	uint32_t smallestLesser = 0;
+	uint32_t mask = 0;
 
+	smallestGreater = input;
+	smallestLesser = input;
+
+	printf(CCI_5_4_INSTRUCTIONS);
+
+	printf("Example: %X\n", input);
+
+	// Count up the number of set bits
+	for(int i=0;i<sizeof(input)*8;i++)
+	{
+		if(((0x01 << i) & input) != 0)
+		{
+			// Check if this bit works for smallest less than
+			if(i>0)
+			{
+				if(((0x01 << (i-1) & input) == 0) && (foundSmallestLesser == false))
+				{
+					// We have found candidate for smallest less than
+					// Clear bit, set bit to the right
+					mask = ~(1 << i);
+					smallestLesser &= mask;
+					
+					mask = (1 << (i-1));
+					smallestLesser |= mask;
+
+					foundSmallestLesser = true;
+				}
+			}
+
+			// Check if this bit works for smallest greater than
+			if((i < (sizeof(input)*8 - 1)) && (foundSmallestGreater == false))
+			{
+				if((0x01 << (i+1) & input) == 0)
+				{
+					// We have found candidate for smallest greater than
+					// Clear bit, set bit to the left
+					mask = ~(1 << i);
+					smallestGreater &= mask;
+
+					mask = (1 << (i+1));
+					smallestGreater |= mask;
+
+					foundSmallestGreater = true;
+				}
+			}
+		}
+		
+		if(foundSmallestLesser == true && foundSmallestGreater == true)
+		{
+			break;
+		}
+
+	}
+
+	printf("Smallest Greater: %X\n", smallestGreater);
+	printf("Smallest Lesser: %X\n", smallestLesser);
 }
