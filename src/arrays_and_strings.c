@@ -16,6 +16,8 @@
 static bool isWhiteSpace(char c);
 static bool isLetter(char c);
 
+////////// Public Functions
+
 void run_cci_excercise_1_1(void)
 {
 	printf(CCI_1_1_INSTRUCTIONS);
@@ -269,9 +271,159 @@ void run_cci_excercise_1_4(void)
 		printf("NO, this is not a palindrome\n");
 	}
 	}
-
-
 }
+
+void run_cci_excercise_1_5(void)
+{
+	char* string1 = "pale";
+	char* string2 = "pake";
+
+	int string1Len = 0;
+	int string2Len = 0;
+
+	int lengthDiff = 0;
+	bool string1Longer = false;
+	bool foundExtraChar = false;
+	bool fountStr1Extra = false;
+	bool fountStr2Extra = false;
+	bool oneOpAway = false;
+
+	char string1Frequ[NUMBER_OF_LETTERS_IN_ALPHABET] = {0};
+	char string2Frequ[NUMBER_OF_LETTERS_IN_ALPHABET] = {0};
+
+	string1Len = strlen(string1);
+	string2Len = strlen(string2);
+
+	printf(CCI_1_5_INSTRUCTIONS);
+	printf("Example: %s, %s\n", string1, string2);
+
+	if(string1Len>string2Len)
+	{
+		lengthDiff = string1Len - string2Len;
+		string1Longer = true;
+	} else
+	{
+		lengthDiff = string2Len - string1Len;
+		string1Longer = false;
+	}
+
+	// Count up letter frequencies of each string
+	for(int i=0;i<strlen(string1);i++)
+	{
+		string1Frequ[string1[i] - 'a']++;
+	}
+	for(int i=0;i<strlen(string2);i++)
+	{
+		string2Frequ[string2[i] - 'a']++;
+	}
+
+	foundExtraChar = false;
+	oneOpAway = true;
+
+	// Check for Insert / Remove a character
+	if(lengthDiff == 1) // total number of letters,  difference is one
+	{
+		// word with one less all frequencies must be in larger one char
+		for(int i=0;i<NUMBER_OF_LETTERS_IN_ALPHABET;i++)
+		{
+			if(string2Frequ[i] != string1Frequ[i])
+			{
+				if(foundExtraChar == true)
+				{
+					oneOpAway = false;
+					break;
+				}
+				else if(string1Longer)
+				{
+					if((string1Frequ[i] - string2Frequ[i]) == 1)
+					{
+						foundExtraChar = true;
+					}
+					else
+					{
+						oneOpAway = false;
+						break;
+					}
+				} 
+				else
+				{
+					if((string2Frequ[i] - string1Frequ[i]) == 1)
+					{
+						foundExtraChar = true;
+					}
+					else
+					{
+						oneOpAway = false;
+						break;
+					}
+				}
+			}
+		}
+		if(oneOpAway == true && foundExtraChar == true)
+		{
+			printf("TRUE\n");
+		}
+		else
+		{
+			printf("FALSE\n");
+		}
+		return;
+	}
+	else if(lengthDiff == 0)
+	{
+		for(int i=0;i<NUMBER_OF_LETTERS_IN_ALPHABET;i++)
+		{
+			if(string1Frequ[i] > string2Frequ[i])
+			{
+				if(fountStr1Extra == true)
+				{
+					oneOpAway = false;
+					break;
+				}
+				else if((string1Frequ[i] - string2Frequ[i]) > 1)
+				{
+					oneOpAway = false;
+					break;
+				}
+				else
+				{
+					fountStr1Extra = true;
+				}
+			}
+			else if(string2Frequ[i] > string1Frequ[i])
+			{
+				if(fountStr2Extra == true)
+				{
+					oneOpAway = false;
+					break;
+				}
+				else if((string2Frequ[i] - string1Frequ[i]) > 1)
+				{
+					oneOpAway = false;
+					break;
+				}
+				else
+				{
+					fountStr2Extra = true;
+				}
+			}
+		}
+		if(oneOpAway == true)
+		{
+			printf("TRUE\n");
+		}
+		else
+		{
+			printf("FALSE\n");
+		}
+	}
+	else
+	{
+		printf("FALSE\n");
+	}
+}
+
+////////// Private Functions
 
 static bool isLetter(char c)
 {
