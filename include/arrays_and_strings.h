@@ -12,3 +12,4 @@ void run_cci_excercise_1_2(void);
 void run_cci_excercise_1_3(void);
 void run_cci_excercise_1_4(void);
 void run_cci_excercise_1_5(void);
+void run_cci_excercise_1_6(void);

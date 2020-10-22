@@ -423,6 +423,65 @@ void run_cci_excercise_1_5(void)
 	}
 }
 
+void run_cci_excercise_1_6(void)
+{
+	char* input = "aabccccaaa";
+	char compressedString[100];
+	int strLength = strlen(input);
+	int letterFrequ[NUMBER_OF_LETTERS_IN_ALPHABET] = {0};
+	int compressedStrLength=0;
+
+	printf("Example: %s\n", input);
+	
+	// Count up frequency of all letters in the string
+	for(int i=0;i<strLength;i++)
+	{
+		letterFrequ[input[i]-'a']++;
+		// Check length of compressed string
+		if(letterFrequ[input[i]-'a'] == 1)
+		{
+			compressedStrLength+=2;
+		}
+		else if(letterFrequ[input[i]-'a'] == 10)
+		{
+			compressedStrLength+=1;
+		}
+	}	
+
+	// Return proper string
+	if(compressedStrLength > strLength)
+	{
+		printf("%s\n", input);
+	}
+	else
+	{
+		int j=0;
+		// Create compressed string
+		for(int i=0;i<NUMBER_OF_LETTERS_IN_ALPHABET;i++)
+		{
+			if(letterFrequ[i] > 0)
+			{
+				compressedString[j++] = 'a' + i;
+				sprintf(compressedString+j, "%d", letterFrequ[i]);
+
+				if(letterFrequ[i]<10)
+				{
+					j+=1;
+				}
+				else
+				{
+					j+=2; // Acount for 2 digits
+				}
+			}
+		}
+
+		compressedString[j] = '\0';
+		
+		printf("%s\n", compressedString);
+	}
+	
+}
+
 ////////// Private Functions
 
 static bool isLetter(char c)

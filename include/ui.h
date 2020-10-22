@@ -5,7 +5,6 @@
 #include "linked_lists.h"
 #include "bit_manipulation.h"
 #include "pool_test.h"
-#include "stacks_and_queues.h"
 
 void ui(void);
 
@@ -17,10 +16,10 @@ void ui(void);
 #define UI_CCI_1_3 "cci-1-3"
 #define UI_CCI_1_4 "cci-1-4"
 #define UI_CCI_1_5 "cci-1-5"
+#define UI_CCI_1_6 "cci-1-6"
 #define UI_CCI_2_1 "cci-2-1"
 #define UI_CCI_2_2 "cci-2-2"
 #define UI_CCI_2_4 "cci-2-4"
-#define UI_CCI_3_1 "cci-3-1"
 #define UI_CCI_5_1 "cci-5-1"
 #define UI_CCI_5_3 "cci-5-3"
 #define UI_CCI_5_4 "cci-5-4"
@@ -35,10 +34,10 @@ void ui(void);
 #define DESC_CCI_1_3 "Run excercise 1-3 from the book \"Cracking the Coding Interview\""
 #define DESC_CCI_1_4 "Run excercise 1-4 from the book \"Cracking the Coding Interview\""
 #define DESC_CCI_1_5 "Run excercise 1-5 from the book \"Cracking the Coding Interview\""
+#define DESC_CCI_1_6 "Run excercise 1-6 from the book \"Cracking the Coding Interview\""
 #define DESC_CCI_2_1 "Run excercise 2-1 from the book \"Cracking the Coding Interview\""
 #define DESC_CCI_2_2 "Run excercise 2-2 from the book \"Cracking the Coding Interview\""
 #define DESC_CCI_2_4 "Run excercise 2-4 from the book \"Cracking the Coding Interview\""
-#define DESC_CCI_3_1 "Run excercise 3-1 from the book \"Cracking the Coding Interview\""
 #define DESC_CCI_5_1 "Run excercise 5-1 from the book \"Cracking the Coding Interview\""
 #define DESC_CCI_5_3 "Run excercise 5-3 from the book \"Cracking the Coding Interview\""
 #define DESC_CCI_5_4 "Run excercise 5-4 from the book \"Cracking the Coding Interview\""
@@ -53,10 +52,10 @@ void ui_cci_1_2(char* userInput);
 void ui_cci_1_3(char* userInput);
 void ui_cci_1_4(char* userInput);
 void ui_cci_1_5(char* userInput);
+void ui_cci_1_6(char* userInput);
 void ui_cci_2_1(char* userInput);
 void ui_cci_2_2(char* userInput);
 void ui_cci_2_4(char* userInput);
-void ui_cci_3_1(char* userInput);
 void ui_cci_5_1(char* userInput);
 void ui_cci_5_3(char* userInput);
 void ui_cci_5_4(char* userInput);
@@ -82,10 +81,10 @@ static const userCommand_t commandTable[] =
 	{UI_CCI_1_3, DESC_CCI_1_3, &ui_cci_1_3},
 	{UI_CCI_1_4, DESC_CCI_1_4, &ui_cci_1_4},
 	{UI_CCI_1_5, DESC_CCI_1_5, &ui_cci_1_5},
+	{UI_CCI_1_6, DESC_CCI_1_6, &ui_cci_1_6},
 	{UI_CCI_2_1, DESC_CCI_2_1, &ui_cci_2_1},
 	{UI_CCI_2_2, DESC_CCI_2_2, &ui_cci_2_2},
 	{UI_CCI_2_4, DESC_CCI_2_4, &ui_cci_2_4},
-	{UI_CCI_3_1, DESC_CCI_3_1, &ui_cci_3_1},
 	{UI_CCI_5_1, DESC_CCI_5_1, &ui_cci_5_1},
 	{UI_CCI_5_3, DESC_CCI_5_3, &ui_cci_5_3},
 	{UI_CCI_5_4, DESC_CCI_5_4, &ui_cci_5_4},
