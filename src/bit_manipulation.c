@@ -137,3 +137,51 @@ void run_cci_excercise_5_4(void)
 	printf("Smallest Greater: 0x%X (%d)\n", smallestGreater, smallestGreater);
 	printf("Smallest Lesser: 0x%X (%d)\n", smallestLesser, smallestLesser);
 }
+
+void run_cci_excercise_5_6(void)
+{ 
+	uint16_t input1 = 0xAAAA;
+	uint16_t input2 = 0xAA55;
+
+	uint16_t xorMask = 0x0000;
+
+	uint16_t mask = 0x0000;
+
+	int bitsToFlip=0;
+
+	printf(CCI_5_6_INSTRUCTIONS);
+
+	printf("Example Inputs: 0x%X, 0x%X\n", input1, input2);
+
+	// Method 1	
+
+	// Iterate each bit of the input values
+	for(int i=0;i<sizeof(input1)*8;i++)
+	{
+		mask = 0x0001 << i;
+		// If bit does not match, incrememnt bits that need to be flipped
+		if( (input1&mask) != (input2&mask) )
+		{
+			bitsToFlip++;
+		}
+	}
+
+	printf("Output (Method 1): %d\n", bitsToFlip);
+
+	// Method 2
+	xorMask = input1^input2; // set bit, means they are not equal
+
+	bitsToFlip = 0;
+
+	for(int i=0;i<sizeof(input1)*8;i++)
+	{	
+		// Count up set bits
+		if((xorMask & 0x0001 << i) != 0)
+		{
+			bitsToFlip++;
+		}
+	}
+
+	printf("Output (Method 2): %d\n", bitsToFlip);
+}
+
