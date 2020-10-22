@@ -431,6 +431,7 @@ void run_cci_excercise_1_6(void)
 	int letterFrequ[NUMBER_OF_LETTERS_IN_ALPHABET] = {0};
 	int compressedStrLength=0;
 
+	printf(CCI_1_6_INSTRUCTIONS);
 	printf("Example: %s\n", input);
 	
 	// Count up frequency of all letters in the string
@@ -478,8 +479,7 @@ void run_cci_excercise_1_6(void)
 		compressedString[j] = '\0';
 		
 		printf("%s\n", compressedString);
-	}
-	
+	}	
 }
 
 ////////// Private Functions

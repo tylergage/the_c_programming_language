@@ -1,8 +1,14 @@
 #include "linked_lists.h"
 
+static bool randInit = false;
+
 static void generateDummyLinkedList(uint16_t numNodes, uint16_t maxVal);
 static void printDummyLinkedList(void);
 static void freeDummyLinkedList(void);
+
+static Node* generateNewDummyLinkedList(uint16_t numNodes, uint16_t maxVal);
+static void printNewDummyLinkedList(Node* listHead);
+static void freeNewDummyLinkedList(Node* listHead);
 
 static Node* listHead = NULL;
 
@@ -165,6 +171,86 @@ void run_cci_excercise_2_4(void)
 	printDummyLinkedList();
 }
 
+void run_cci_excercise_2_5(void)
+{
+	Node* list1Head;
+	Node* list2Head;
+	Node* runner1;
+	Node* runner2;
+
+	Node* outputListRunner;
+	Node* outputListHead;
+
+	int temp=0;
+	int carryVal=0;
+
+	list1Head = generateNewDummyLinkedList(3, 9);
+	list2Head = generateNewDummyLinkedList(3, 9);
+
+	printf(CCI_2_5_INSTRUCTIONS);
+
+	printf("Example:\n");
+	printf("Input: List 1\n");
+	printNewDummyLinkedList(list1Head);
+
+	printf("Input: List 2\n");
+	printNewDummyLinkedList(list2Head);
+
+	runner1 = list1Head;
+	runner2 = list2Head;
+
+	// Initialize output list
+	outputListHead = (Node*) malloc(sizeof(Node));
+	outputListHead->data = 0;
+	outputListHead->next = NULL;
+
+	outputListRunner = outputListHead;
+
+	while(runner1!=NULL && runner2!=NULL)
+	{
+		temp = runner1->data + runner2->data + carryVal;
+
+		if(temp < 10)
+		{
+			outputListRunner->data = temp;
+			carryVal = 0;
+		}
+		else
+		{
+			outputListRunner->data = temp%10;
+			carryVal = 1;
+		}
+
+		if(runner1->next!=NULL && runner2->next!=NULL)
+		{
+			outputListRunner->next = (Node*) malloc(sizeof(Node));
+			outputListRunner = outputListRunner->next;
+			outputListRunner->data = 0;
+			outputListRunner->next = NULL;
+		}
+
+		runner1= runner1->next;
+		runner2= runner2->next;
+	}
+
+	if(carryVal > 0)
+	{
+		outputListRunner->next = (Node*) malloc(sizeof(Node));
+		outputListRunner = outputListRunner->next;
+
+		outputListRunner->data = carryVal;
+		outputListRunner->next = NULL;
+	}
+
+	printf("Output List:\n");
+	printNewDummyLinkedList(outputListHead);
+
+	freeNewDummyLinkedList(list1Head);
+	freeNewDummyLinkedList(list2Head);
+	freeNewDummyLinkedList(outputListHead);
+
+
+}
 ////////// Private Functions //////////
 
 // Create a dummy single linked list for problems, random values
@@ -194,7 +280,6 @@ static void generateDummyLinkedList(uint16_t numNodes, uint16_t maxVal)
 		nodePtr->next = NULL;
 
 	}
-
 }
 
 // Print generated linked list
@@ -212,7 +297,6 @@ static void printDummyLinkedList(void)
 		printf("Node %d: %d\n", i++, nodePtr->data);
 		nodePtr = nodePtr->next;
 	}
-
 }
 
 // Make sure memory is freed up after we are done with lists
@@ -222,6 +306,85 @@ static void freeDummyLinkedList(void)
 	Node* nodePtr2 = NULL;
 
 	nodePtr1 = listHead;
+	nodePtr2 = nodePtr1->next;
+
+	// Free all memory for linked list
+	while(nodePtr1 != NULL)
+	{
+		free(nodePtr1);
+
+		if(nodePtr2 != NULL)
+		{
+			nodePtr1 = nodePtr2;
+			nodePtr2 = nodePtr1->next;
+		}
+		else
+		{
+			break;
+		}
+	}
+}
+
+// Create a dummy single linked list for problems, random values, return head
+static Node* generateNewDummyLinkedList(uint16_t numNodes, uint16_t maxVal)
+{
+	Node* nodePtr = NULL;
+	Node* head;
+
+	// Initialize for random data values 
+	if(randInit == false)
+	{
+		srand(time(NULL)); 
+		randInit = true;
+	}
+
+	// Create node head
+	nodePtr = (Node*) malloc(sizeof(Node));
+	nodePtr->data = rand()%(maxVal+1);
+	nodePtr->next = NULL;
+
+	head = nodePtr;
+
+	// Create rest of list
+	for(int i=0;i< numNodes - 1;i++)
+	{
+		// Create next node
+		nodePtr->next = (Node*) malloc(sizeof(Node));
+		nodePtr = nodePtr->next;
+		
+		// Polulate Data
+		nodePtr->data = rand()%(maxVal+1);
+		nodePtr->next = NULL;
+
+	}
+
+	return head;
+}
+
+// Print generated linked list, of a specific list
+static void printNewDummyLinkedList(Node* mlistHead)
+{
+	Node* nodePtr = NULL;
+	int i = 0;
+
+	nodePtr = mlistHead;
+
+	printf("Linked List:\n");
+	
+	while(nodePtr != NULL)
+	{
+		printf("Node %d: %d\n", i++, nodePtr->data);
+		nodePtr = nodePtr->next;
+	}
+}
+
+// Make sure memory is freed up after we are done with list, of a specified list
+static void freeNewDummyLinkedList(Node* mlistHead)
+{
+	Node* nodePtr1 = NULL;
+	Node* nodePtr2 = NULL;
+
+	nodePtr1 = mlistHead;
 	nodePtr2 = nodePtr1->next;
 
 	// Free all memory for linked list
