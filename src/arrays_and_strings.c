@@ -482,6 +482,55 @@ void run_cci_excercise_1_6(void)
 	}	
 }
 
+
+
+void run_cci_excercise_1_7(void)
+{
+	#define N_SIZE 4
+
+	int input[N_SIZE][N_SIZE] = {0};
+	int output[N_SIZE][N_SIZE] = {0};
+
+	printf(CCI_1_7_INSTRUCTIONS);
+
+	// Print out input array for example
+	int k=0;
+
+	printf("Example Input:\n");
+	for(int i=0;i<N_SIZE;i++)
+	{
+		for(int j=0;j<N_SIZE;j++)
+		{
+			input[i][j] = k++;
+			printf("|%3d", input[i][j]);
+		}
+		printf("|\n");
+	}
+
+	// Iterate through each row, put it in column of output array, unoptimized
+	for(int i=0;i<N_SIZE;i++)
+	{
+		for(int j=0;j<N_SIZE;j++)
+		{
+			output[j][(N_SIZE-1)-i] = input[i][j];
+		}
+	}
+
+	printf("Example Output:\n");
+	// Print out output
+	for(int i=0;i<N_SIZE;i++)
+	{
+		for(int j=0;j<N_SIZE;j++)
+		{
+			printf("|%3d", output[i][j]);
+		}
+		printf("|\n");
+	}
+
+
+}
+
+
 ////////// Private Functions
 
 static bool isLetter(char c)
