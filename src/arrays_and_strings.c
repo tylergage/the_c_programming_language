@@ -482,14 +482,12 @@ void run_cci_excercise_1_6(void)
 	}	
 }
 
-
-
 void run_cci_excercise_1_7(void)
 {
-	#define N_SIZE 4
+	#define N_1_7_SIZE 4
 
-	int input[N_SIZE][N_SIZE] = {0};
-	int output[N_SIZE][N_SIZE] = {0};
+	int input[N_1_7_SIZE][N_1_7_SIZE] = {0};
+	int output[N_1_7_SIZE][N_1_7_SIZE] = {0};
 
 	printf(CCI_1_7_INSTRUCTIONS);
 
@@ -497,9 +495,9 @@ void run_cci_excercise_1_7(void)
 	int k=0;
 
 	printf("Example Input:\n");
-	for(int i=0;i<N_SIZE;i++)
+	for(int i=0;i<N_1_7_SIZE;i++)
 	{
-		for(int j=0;j<N_SIZE;j++)
+		for(int j=0;j<N_1_7_SIZE;j++)
 		{
 			input[i][j] = k++;
 			printf("|%3d", input[i][j]);
@@ -508,26 +506,84 @@ void run_cci_excercise_1_7(void)
 	}
 
 	// Iterate through each row, put it in column of output array, unoptimized
-	for(int i=0;i<N_SIZE;i++)
+	for(int i=0;i<N_1_7_SIZE;i++)
 	{
-		for(int j=0;j<N_SIZE;j++)
+		for(int j=0;j<N_1_7_SIZE;j++)
 		{
-			output[j][(N_SIZE-1)-i] = input[i][j];
+			output[j][(N_1_7_SIZE-1)-i] = input[i][j];
 		}
 	}
 
 	printf("Example Output:\n");
 	// Print out output
-	for(int i=0;i<N_SIZE;i++)
+	for(int i=0;i<N_1_7_SIZE;i++)
 	{
-		for(int j=0;j<N_SIZE;j++)
+		for(int j=0;j<N_1_7_SIZE;j++)
 		{
 			printf("|%3d", output[i][j]);
 		}
 		printf("|\n");
 	}
+}
 
+void run_cci_excercise_1_8(void)
+{
+	#define N_SIZE 15
+	#define M_SIZE 15
 
+	int input[M_SIZE][N_SIZE] = {0};
+	int zeroRows[M_SIZE] = {0};
+	int zeroColumns[N_SIZE] = {0};
+
+	printf(CCI_1_8_INSTRUCTIONS);
+
+	printf("Example Input:\n");
+	
+	srand(time(NULL)); // Use random values to test solution
+
+	for(int i=0;i<M_SIZE;i++)
+	{
+		for(int j=0;j<N_SIZE;j++)
+		{
+			input[i][j] = rand()%(11); // Random values between 0 and 10
+			printf("|%3d", input[i][j]);
+		}
+		printf("|\n");
+	}
+
+	for(int i=0;i<M_SIZE;i++)
+	{
+		for(int j=0;j<N_SIZE;j++)
+		{
+			if(input[i][j] == 0)
+			{
+				zeroRows[i] = 1;
+				zeroColumns[j] = 1;
+			}
+		}
+	}
+
+	for(int i=0;i<M_SIZE;i++)
+	{
+			for(int j=0;j<N_SIZE;j++)
+			{
+				if(zeroRows[i] == 1 || zeroColumns[j] == 1)
+				{
+					input[i][j] = 0;
+				}
+			}	
+	}
+
+	printf("Example Output:\n");
+	// Print out output
+	for(int i=0;i<M_SIZE;i++)
+	{
+		for(int j=0;j<N_SIZE;j++)
+		{
+			printf("|%3d", input[i][j]);
+		}
+		printf("|\n");
+	}
 }
 
 
