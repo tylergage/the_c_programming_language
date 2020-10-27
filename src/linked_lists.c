@@ -316,12 +316,88 @@ void run_cci_excercise_2_6(void)
 
 void run_cci_excercise_2_7(void)
 {
+	Node* listHead1;
+	Node* listHead2;
+	Node* runner1;
+	Node* runner2;
 
-}
+	int listLength1 = 0;
+	int listLength2 = 0;
 
-void run_cci_excercise_2_8(void)
-{
+	int matchingElementNumber=0; 
 
+	printf(CCI_2_7_INSTRUCTIONS);
+
+	// Setup lists for testing solution
+	listHead1 = generateNewDummyLinkedList(7, 10);
+	listHead2 = generateNewDummyLinkedList(2, 10);
+
+	runner2 = listHead2;
+
+	while(runner2->next != NULL)
+	{
+		runner2 = runner2->next;
+	}
+
+	runner1 = listHead1;
+	for(int i=0;i<4;i++)
+	{
+		runner1 = runner1->next;
+	}
+
+	runner2->next = runner1;
+
+	printNewDummyLinkedList(listHead1);
+	printNewDummyLinkedList(listHead2);
+
+	// Find lengths of both lists
+	runner1 = listHead1;
+	listLength1++;
+
+	while(runner1->next != NULL)
+	{
+		listLength1++;
+		runner1 = runner1->next;
+	}
+
+	runner2 = listHead2;
+	listLength2++;
+
+	while(runner2->next != NULL)
+	{
+		listLength2++;
+		runner2 = runner2->next;
+	}
+
+	printf("List 1 Length=%d, List 2 Length=%d\n", listLength1, listLength2);
+
+	// Check if last element is the same
+	if(runner1 != runner2)
+	{
+		printf("Lists do not intersect!!!\n");
+		return;
+	}
+
+	// Offset longer list to match shorter
+	// (Going to assume list 1 is longer for now)
+	runner1 = listHead1;
+	for(int i=0;i<(listLength1-listLength2);i++)
+	{
+		runner1 = runner1->next;
+		matchingElementNumber++; // incrememnt, as mismatch length is minimal value it can be
+	}
+
+	// Go through and check until they match
+	runner2 = listHead2;
+
+	while(runner1!=runner2)
+	{
+		matchingElementNumber++;
+		runner1 = runner1->next;
+		runner2 = runner2->next;
+	}
+
+	printf("Intersection found at: %d element of list 1\n", matchingElementNumber);
 }
 
 ////////// Private Functions //////////

@@ -158,11 +158,6 @@ void ui_cci_2_7(char* userInput)
 	run_cci_excercise_2_7();
 }
 
-void ui_cci_2_8(char* userInput)
-{
-	run_cci_excercise_2_8();
-}
-
 void ui_cci_5_1(char* userInput)
 {
 	run_cci_excercise_5_1();

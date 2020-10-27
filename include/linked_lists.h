@@ -10,8 +10,7 @@
 #define CCI_2_4_INSTRUCTIONS "Partition: Given a partition value, put all nodes to the right greater than or equal to partition\n"
 #define CCI_2_5_INSTRUCTIONS "Sum List: 2 lists each node is a digit, add them up\n"
 #define CCI_2_6_INSTRUCTIONS "Palindrome: Check if a linked list is a palindrome\n"
-#define CCI_2_7_INSTRUCTIONS "ToDo: Fill in instructions\n"
-#define CCI_2_8_INSTRUCTIONS "ToDo: Fill in instructions\n"
+#define CCI_2_7_INSTRUCTIONS "Intersection: Find node where 2 lists intersect\n"
 
 typedef struct Node
 {
@@ -19,11 +18,9 @@ typedef struct Node
 	int data;
 } Node;
 
-
 void run_cci_excercise_2_1(void);
 void run_cci_excercise_2_2(void);
 void run_cci_excercise_2_4(void);
 void run_cci_excercise_2_5(void);
 void run_cci_excercise_2_6(void);
 void run_cci_excercise_2_7(void);
-void run_cci_excercise_2_8(void);
