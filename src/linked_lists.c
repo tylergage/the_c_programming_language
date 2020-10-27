@@ -248,9 +248,82 @@ void run_cci_excercise_2_5(void)
 	freeNewDummyLinkedList(list1Head);
 	freeNewDummyLinkedList(list2Head);
 	freeNewDummyLinkedList(outputListHead);
+}
 
+void run_cci_excercise_2_6(void)
+{
+	Node* runner;
+	Node* runnerMirror;
+
+	int nodesInList = 0;
+
+	printf(CCI_2_6_INSTRUCTIONS);
+
+	generateDummyLinkedList(9, 10);
+
+	// Prep list for testing
+	runner = listHead;
+
+	for(int i=0;i<5;i++)
+	{
+		runner->data = i+1;
+		runner = runner->next;
+	}
+
+	for(int i=0;i<4;i++)
+	{
+		runner->data = 5-i-1;
+		runner = runner->next;
+	}
+
+	printDummyLinkedList();
+
+	runner = listHead;
+
+	// Count up total number of nodes
+	runner = listHead;
+	while(runner!=NULL)
+	{
+		nodesInList++;
+		runner = runner->next;
+	}
+
+	printf("%d = number of nodes\n", nodesInList);
+
+	// Iterate through list
+	runner = listHead;
+
+	for(int i=0;i<(nodesInList/2);i++)
+	{
+		runnerMirror = runner;
+		// Find mirror node
+		for(int j=0;j<(nodesInList - 1 - 2*i);j++)
+		{
+			runnerMirror = runnerMirror->next;
+		}
+		// Check equality of first nodes with back half
+		if(runnerMirror->data != runner->data)
+		{
+			printf("NOT a palindrome\n");
+			return;
+		}
+
+		runner = runner->next;
+	}
+
+	printf("IS a palindrome\n");
+}
+
+void run_cci_excercise_2_7(void)
+{
 
 }
+
+void run_cci_excercise_2_8(void)
+{
+
+}
+
 ////////// Private Functions //////////
 
 // Create a dummy single linked list for problems, random values
