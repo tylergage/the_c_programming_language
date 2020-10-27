@@ -30,6 +30,7 @@ void ui(void);
 #define UI_CCI_5_4 "cci-5-4"
 #define UI_CCI_5_6 "cci-5-6"
 #define UI_CCI_5_7 "cci-5-7"
+#define UI_CCI_5_8 "cci-5-8"
 #define UI_POOL_ALLOC "pool"
 #define UI_INFO "info"
 #define UI_HELP "help"
@@ -55,6 +56,7 @@ void ui(void);
 #define DESC_CCI_5_4 "Run excercise 5-4 from the book \"Cracking the Coding Interview\""
 #define DESC_CCI_5_6 "Run excercise 5-6 from the book \"Cracking the Coding Interview\""
 #define DESC_CCI_5_7 "Run excercise 5-7 from the book \"Cracking the Coding Interview\""
+#define DESC_CCI_5_8 "Run excercise 5-8 from the book \"Cracking the Coding Interview\""
 #define DESC_POOL_ALLOC "Test pool allocator, take home interview"
 #define DESC_INFO "Get more information on this program"
 #define DESC_HELP "List all commands"
@@ -80,6 +82,7 @@ void ui_cci_5_3(char* userInput);
 void ui_cci_5_4(char* userInput);
 void ui_cci_5_6(char* userInput);
 void ui_cci_5_7(char* userInput);
+void ui_cci_5_8(char* userInput);
 void ui_pool_alloc(char* userInput);
 void ui_info(char* userInput);
 void ui_help(char* userInput);
@@ -116,5 +119,6 @@ static const userCommand_t commandTable[] =
 	{UI_CCI_5_4, DESC_CCI_5_4, &ui_cci_5_4},
 	{UI_CCI_5_6, DESC_CCI_5_6, &ui_cci_5_6},
 	{UI_CCI_5_7, DESC_CCI_5_7, &ui_cci_5_7},
+	{UI_CCI_5_8, DESC_CCI_5_8, &ui_cci_5_8},
 	{UI_POOL_ALLOC, DESC_POOL_ALLOC, &ui_pool_alloc},
 };

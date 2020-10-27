@@ -1,6 +1,8 @@
 
 #include "bit_manipulation.h"
 
+static void printScreen(uint8_t* screen, int size,  int w);
+
 void run_cci_excercise_5_1(void)
 {
 	printf(CCI_5_1_INSTRUCTIONS);
@@ -211,4 +213,55 @@ void run_cci_excercise_5_7(void)
 	output = temp1|temp2;
 
 	printf("Output: 0x%X\n", output);
+}
+
+void run_cci_excercise_5_8(void)
+{
+	#define SCREEN_SIZE_BYTES 64
+	
+	uint8_t screen[SCREEN_SIZE_BYTES] = {0};
+	int width = 8;
+	int x1 = 22;
+	int x2 = 32;
+	int y  = 6;
+
+	printf(CCI_5_8_INSTRUCTIONS);
+
+	int heightOffset=0;
+
+	// ToDo: Check inputs
+
+	// Find offset in screen based on height
+	heightOffset = width*y;
+
+	// Find horizontal offset, exact byte for start of line
+	uint8_t mask=0xFF;
+
+	mask = ~(0xFF<<(8-x1%8));
+	screen[heightOffset + x1/8] |= mask;
+
+	// Fill in bytes in between
+	for(int i=1; i<(x2-x1)/8+1;i++)
+	{
+		screen[heightOffset + x1/8 + i] = 0xFF;
+	}
+
+	// Fill in last byte
+	mask = (0xFF<<(8-x2%8-1));
+	screen[heightOffset + x2/8] |= mask;
+
+	printScreen(screen, SCREEN_SIZE_BYTES, width);
+
+}
+
+static void printScreen(uint8_t* screen, int size,  int w)
+{
+	for(int i=0;i<(size/w);i++)
+	{
+		for(int j=0;j<w;j++)
+		{	
+			printf("%.2X", screen[w*i+j]);
+		}
+		printf("\n");
+	}
 }

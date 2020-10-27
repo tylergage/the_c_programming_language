@@ -183,6 +183,10 @@ void ui_cci_5_7(char* userInput)
 	run_cci_excercise_5_7();
 }
 
+void ui_cci_5_8(char* userInput)
+{
+	run_cci_excercise_5_8();
+}
 
 void ui_pool_alloc(char* userInput)
 {
