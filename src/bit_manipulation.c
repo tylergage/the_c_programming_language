@@ -185,3 +185,30 @@ void run_cci_excercise_5_6(void)
 	printf("Output (Method 2): %d\n", bitsToFlip);
 }
 
+void run_cci_excercise_5_7(void)
+{
+	uint32_t input = 0xFFAA5005;
+	uint32_t output = 0;
+
+	uint32_t temp1 = 0;
+	uint32_t temp2 = 0;
+
+	uint32_t mask1 = 0x55555555;
+	uint32_t mask2 = 0xAAAAAAAA;
+
+	printf(CCI_5_7_INSTRUCTIONS);
+	printf("Input: 0x%X\n", input);
+
+	// For even bits, clear odd bits, shift right
+	temp1 = input&mask2;
+	temp1 = temp1>>1;
+
+	// For odd bits, clear even bits, shift left
+	temp2 = input&mask1;
+	temp2 = temp2<<1;
+
+	// Combine
+	output = temp1|temp2;
+
+	printf("Output: 0x%X\n", output);
+}

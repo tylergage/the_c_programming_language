@@ -6,7 +6,6 @@
 
 void pool_test(void);
 
-
 /////////////////// Test 1: Able to initialize up to max block zone amount
 /////////////////// Test 2: pool_init fails with too many bock sizes
 /////////////////// Test 3: Malloc returns pointer with single block

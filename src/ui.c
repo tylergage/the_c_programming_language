@@ -178,6 +178,12 @@ void ui_cci_5_6(char* userInput)
 	run_cci_excercise_5_6();
 }
 
+void ui_cci_5_7(char* userInput)
+{
+	run_cci_excercise_5_7();
+}
+
+
 void ui_pool_alloc(char* userInput)
 {
 	pool_test();
