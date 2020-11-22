@@ -192,3 +192,8 @@ void ui_pool_alloc(char* userInput)
 {
 	pool_test();
 }
+
+void ui_concurrency(char* userInput)
+{
+	test_readers_writers();
+}

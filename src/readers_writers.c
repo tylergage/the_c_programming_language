@@ -1,5 +1,6 @@
 
 #include "readers_writers.h"
+#include <dispatch/dispatch.h>
 
 /***************************************************************
  * Function Prototypes
@@ -63,15 +64,46 @@ static void resource_write(void);
 /***************************************************************
  * Candidate Code
  ***************************************************************/
+// static sem_t* readSem;
+// static sem_t writeSem;
+
+dispatch_semaphore_t readSemaphore;
+dispatch_semaphore_t writeSemaphore;
+
+static atomic_int numReaders = 0;
+static atomic_int writeActive = 0;
 
 static void read_protected(void)
 {
+
+  if(writeActive)
+  {
+    dispatch_semaphore_wait(writeSemaphore, DISPATCH_TIME_FOREVER);
+  }
+
+  atomic_fetch_add(&numReaders, 1);
   resource_read();
+  atomic_fetch_sub(&numReaders, 1);
+
+  if(numReaders == 0)
+  {
+    dispatch_semaphore_signal(readSemaphore);
+  }
 }
 
 static void write_protected(void)
 {
+  if(numReaders > 0)
+  {
+    dispatch_semaphore_wait(readSemaphore, DISPATCH_TIME_FOREVER);
+  }
+
+  atomic_fetch_add(&writeActive, 1);
   resource_write();
+  atomic_fetch_sub(&writeActive, 1);
+
+  dispatch_semaphore_signal(writeSemaphore);
+
 }
 
 /***************************************************************
@@ -131,6 +163,21 @@ void test_readers_writers(void) {
   pthread_t readers[NUM_READERS];
   pthread_t writers[NUM_WRITERS];
 
+  // readSem = sem_open("READ", O_CREAT);
+  // if(readSem == SEM_FAILED)
+  // {
+  //   printf("Read semaphore failed!!!\n");
+  // }
+
+  // writeSem = sem_open("WRITE", O_CREAT);
+  // if(writeSem == SEM_FAILED)
+  // {
+  //   printf("Write semaphore failed!!!\n");
+  // }
+
+  readSemaphore  = dispatch_semaphore_create(0);
+  writeSemaphore = dispatch_semaphore_create(0);
+
   for (int i = 0; i < NUM_READERS; i++) {
     pthread_create( &readers[i], NULL, read_func, NULL);
   }
@@ -138,11 +185,12 @@ void test_readers_writers(void) {
     pthread_create( &writers[i], NULL, write_func, NULL);
   }
 
-  for (int i = 0; i < NUM_READERS; i++) {
-    pthread_join( readers[i], NULL);
-  }
   for (int i = 0; i < NUM_WRITERS; i++) {
     pthread_join( writers[i], NULL);
   }
+  for (int i = 0; i < NUM_READERS; i++) {
+    pthread_join( readers[i], NULL);
+  }
+  
 }
 
