@@ -64,18 +64,16 @@ static void resource_write(void);
 /***************************************************************
  * Candidate Code
  ***************************************************************/
-// static sem_t* readSem;
-// static sem_t writeSem;
-
 dispatch_semaphore_t readSemaphore;
 dispatch_semaphore_t writeSemaphore;
+
+static pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 
 static atomic_int numReaders = 0;
 static atomic_int writeActive = 0;
 
 static void read_protected(void)
 {
-
   if(writeActive)
   {
     dispatch_semaphore_wait(writeSemaphore, DISPATCH_TIME_FOREVER);
@@ -87,12 +85,14 @@ static void read_protected(void)
 
   if(numReaders == 0)
   {
-    dispatch_semaphore_signal(readSemaphore);
+      dispatch_semaphore_signal(readSemaphore);
   }
 }
 
 static void write_protected(void)
 {
+  pthread_mutex_lock(&lock);
+  
   if(numReaders > 0)
   {
     dispatch_semaphore_wait(readSemaphore, DISPATCH_TIME_FOREVER);
@@ -103,6 +103,8 @@ static void write_protected(void)
   atomic_fetch_sub(&writeActive, 1);
 
   dispatch_semaphore_signal(writeSemaphore);
+
+  pthread_mutex_unlock(&lock);
 
 }
 
@@ -162,18 +164,6 @@ void test_readers_writers(void) {
 
   pthread_t readers[NUM_READERS];
   pthread_t writers[NUM_WRITERS];
-
-  // readSem = sem_open("READ", O_CREAT);
-  // if(readSem == SEM_FAILED)
-  // {
-  //   printf("Read semaphore failed!!!\n");
-  // }
-
-  // writeSem = sem_open("WRITE", O_CREAT);
-  // if(writeSem == SEM_FAILED)
-  // {
-  //   printf("Write semaphore failed!!!\n");
-  // }
 
   readSemaphore  = dispatch_semaphore_create(0);
   writeSemaphore = dispatch_semaphore_create(0);
