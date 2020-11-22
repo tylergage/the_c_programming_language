@@ -25,187 +25,187 @@ void pool_test(void)
 	size_t i,j,k;
 
 	/////////////////// Test 1: Able to initialize up to max block zone amount
-	// printf("Test 1: Able to initialize up to max block zone amount\n");
-	// // Setup
-	// testFail = false;
-	// for(i=0;i<MAX_BLOCK_SIZES;i++)
-	// {
-	// 	testBlockSizes[i] = (i+1)*8;
-	// }
+	printf("Test 1: Able to initialize up to max block zone amount\n");
+	// Setup
+	testFail = false;
+	for(i=0;i<MAX_BLOCK_SIZES;i++)
+	{
+		testBlockSizes[i] = (i+1)*8;
+	}
 
-	// // Test
-	// for(i=1;i<MAX_BLOCK_SIZES+1;i++)
-	// {
-	// 	if(pool_init(testBlockSizes, i) == false)
-	// 	{
-	// 		testFail = true;
-	// 		break;
-	// 	}
-	// }
+	// Test
+	for(i=1;i<MAX_BLOCK_SIZES+1;i++)
+	{
+		if(pool_init(testBlockSizes, i) == false)
+		{
+			testFail = true;
+			break;
+		}
+	}
 
-	// if(testFail == true)
-	// {
-	// 	printf("Test 1 failed!\n");
-	// }
-	// else 
-	// {
-	// 	printf("Test 1 passed!\n");
-	// }
+	if(testFail == true)
+	{
+		printf("Test 1 failed!\n");
+	}
+	else 
+	{
+		printf("Test 1 passed!\n");
+	}
 
-	// /////////////////// Test 2: pool_init fails with too many bock sizes
-	// printf("Test 2: pool_init fails with too many bock sizes\n");
-	// // Setup
-	// testFail = false;
-	// for(i=0;i<MAX_BLOCK_SIZES;i++)
-	// {
-	// 	testBlockSizes[i] = (i+1)*8;
-	// }
-	// memset(testPtrs, 0x00, sizeof(testPtrs));
+	/////////////////// Test 2: pool_init fails with too many bock sizes
+	printf("Test 2: pool_init fails with too many bock sizes\n");
+	// Setup
+	testFail = false;
+	for(i=0;i<MAX_BLOCK_SIZES;i++)
+	{
+		testBlockSizes[i] = (i+1)*8;
+	}
+	memset(testPtrs, 0x00, sizeof(testPtrs));
 
-	// // Test
-	// if(pool_init(testBlockSizes, MAX_BLOCK_SIZES + 1) == true)
-	// {
-	// 	testFail = true;
-	// }
+	// Test
+	if(pool_init(testBlockSizes, MAX_BLOCK_SIZES + 1) == true)
+	{
+		testFail = true;
+	}
 
-	// if(testFail == true)
-	// {
-	// 	printf("Test 2 failed!\n");
-	// }
-	// else 
-	// {
-	// 	printf("Test 2 passed!\n");
-	// }
+	if(testFail == true)
+	{
+		printf("Test 2 failed!\n");
+	}
+	else 
+	{
+		printf("Test 2 passed!\n");
+	}
 
-	// /////////////////// Test 3: Malloc returns pointer with single block
-	// printf("Test 3: Malloc returns pointer with single block\n");
-	// // Setup
-	// testFail = false;
-	// for(i=0;i<MAX_BLOCK_SIZES;i++)
-	// {
-	// 	testBlockSizes[i] = (i+1)*8;
-	// }
-	// memset(testPtrs, 0x00, sizeof(testPtrs));
+	/////////////////// Test 3: Malloc returns pointer with single block
+	printf("Test 3: Malloc returns pointer with single block\n");
+	// Setup
+	testFail = false;
+	for(i=0;i<MAX_BLOCK_SIZES;i++)
+	{
+		testBlockSizes[i] = (i+1)*8;
+	}
+	memset(testPtrs, 0x00, sizeof(testPtrs));
 
-	// // Test
-	// pool_init(testBlockSizes, 1);
+	// Test
+	pool_init(testBlockSizes, 1);
 
-	// testPtrs[0] = (uint8_t*)pool_malloc(8);
+	testPtrs[0] = (uint8_t*)pool_malloc(8);
 
-	// if(testPtrs[0] == NULL)
-	// {
-	// 	testFail = true;
-	// }
+	if(testPtrs[0] == NULL)
+	{
+		testFail = true;
+	}
 
-	// if(testFail == true)
-	// {
-	// 	printf("Test 3 failed!\n");
-	// }
-	// else 
-	// {
-	// 	printf("Test 3 passed!\n");
-	// }
+	if(testFail == true)
+	{
+		printf("Test 3 failed!\n");
+	}
+	else 
+	{
+		printf("Test 3 passed!\n");
+	}
 
-	// /////////////////// Test 4: Malloc returns valid pointers with multiple block sizes
-	// printf("Test 4: Malloc returns valid pointers with multiple block sizes\n");
-	// // Setup
-	// testFail = false;
-	// for(i=0;i<MAX_BLOCK_SIZES;i++)
-	// {
-	// 	testBlockSizes[i] = (i+1)*8;
-	// }
-	// memset(testPtrs, 0x00, sizeof(testPtrs));
+	/////////////////// Test 4: Malloc returns valid pointers with multiple block sizes
+	printf("Test 4: Malloc returns valid pointers with multiple block sizes\n");
+	// Setup
+	testFail = false;
+	for(i=0;i<MAX_BLOCK_SIZES;i++)
+	{
+		testBlockSizes[i] = (i+1)*8;
+	}
+	memset(testPtrs, 0x00, sizeof(testPtrs));
 
-	// // Test
-	// pool_init(testBlockSizes, 5);
+	// Test
+	pool_init(testBlockSizes, 5);
 
-	// for(i=0;i<5;i++)
-	// {
-	// 	testPtrs[i] = (uint8_t*)pool_malloc((i+1)*8);
-	// 	if(testPtrs[i] == NULL)
-	// 	{
-	// 		testFail = true;
-	// 		break;
-	// 	}
-	// }
+	for(i=0;i<5;i++)
+	{
+		testPtrs[i] = (uint8_t*)pool_malloc((i+1)*8);
+		if(testPtrs[i] == NULL)
+		{
+			testFail = true;
+			break;
+		}
+	}
 
-	// if(testFail == true)
-	// {
-	// 	printf("Test 4 failed!\n");
-	// }
-	// else 
-	// {
-	// 	printf("Test 4 passed!\n");
-	// }
+	if(testFail == true)
+	{
+		printf("Test 4 failed!\n");
+	}
+	else 
+	{
+		printf("Test 4 passed!\n");
+	}
 
-	// /////////////////// Test 5: Malloc returns valid pointer with max block sizes
-	// printf("Test 5: Malloc returns valid pointer with max block sizes\n");
-	// // Setup
-	// testFail = false;
-	// for(i=0;i<MAX_BLOCK_SIZES;i++)
-	// {
-	// 	testBlockSizes[i] = (i+1)*8;
-	// }
-	// memset(testPtrs, 0x00, sizeof(testPtrs));
+	/////////////////// Test 5: Malloc returns valid pointer with max block sizes
+	printf("Test 5: Malloc returns valid pointer with max block sizes\n");
+	// Setup
+	testFail = false;
+	for(i=0;i<MAX_BLOCK_SIZES;i++)
+	{
+		testBlockSizes[i] = (i+1)*8;
+	}
+	memset(testPtrs, 0x00, sizeof(testPtrs));
 
-	// // Test
-	// pool_init(testBlockSizes, MAX_BLOCK_SIZES);
+	// Test
+	pool_init(testBlockSizes, MAX_BLOCK_SIZES);
 
-	// for(i=0;i<MAX_BLOCK_SIZES;i++)
-	// {
-	// 	testPtrs[i] = (uint8_t*)pool_malloc((i+1)*8);
-	// 	if(testPtrs[i] == NULL)
-	// 	{
-	// 		testFail = true;
-	// 		break;
-	// 	}
-	// }
+	for(i=0;i<MAX_BLOCK_SIZES;i++)
+	{
+		testPtrs[i] = (uint8_t*)pool_malloc((i+1)*8);
+		if(testPtrs[i] == NULL)
+		{
+			testFail = true;
+			break;
+		}
+	}
 
-	// if(testFail == true)
-	// {
-	// 	printf("Test 5 failed!\n");
-	// }
-	// else 
-	// {
-	// 	printf("Test 5 passed!\n");
-	// }
+	if(testFail == true)
+	{
+		printf("Test 5 failed!\n");
+	}
+	else 
+	{
+		printf("Test 5 passed!\n");
+	}
 
 
-	// /////////////////// Test 6: Single block size able to allocate full heap
-	// printf("Test 6: Single block size able to allocate full heap\n");
-	// // Setup
-	// testFail = false;
-	// testTotalBlocks = 1;
-	// for(i=0;i<MAX_BLOCK_SIZES;i++)
-	// {
-	// 	testBlockSizes[i] = (i+1)*8;
-	// 	numBlocksInZone[i] = ((uint32_t)SIZE_OF_GLOBAL_HEAP_BYTES / (uint32_t)testTotalBlocks) / ((uint32_t) testBlockSizes[0] + sizeof(uint8_t*));
-	// 	testPtrs[i] = NULL;
-	// }
-	// memset(testPtrs, 0x00, sizeof(testPtrs));
+	/////////////////// Test 6: Single block size able to allocate full heap
+	printf("Test 6: Single block size able to allocate full heap\n");
+	// Setup
+	testFail = false;
+	testTotalBlocks = 1;
+	for(i=0;i<MAX_BLOCK_SIZES;i++)
+	{
+		testBlockSizes[i] = (i+1)*8;
+		numBlocksInZone[i] = ((uint32_t)SIZE_OF_GLOBAL_HEAP_BYTES / (uint32_t)testTotalBlocks) / ((uint32_t) testBlockSizes[0] + sizeof(uint8_t*));
+		testPtrs[i] = NULL;
+	}
+	memset(testPtrs, 0x00, sizeof(testPtrs));
 
-	// // Test
-	// pool_init(testBlockSizes, testTotalBlocks);
+	// Test
+	pool_init(testBlockSizes, testTotalBlocks);
 
-	// for(i=0;i<numBlocksInZone[0];i++)
-	// {
-	// 	testPtrs[i] = (uint8_t*)pool_malloc(testBlockSizes[0]);
+	for(i=0;i<numBlocksInZone[0];i++)
+	{
+		testPtrs[i] = (uint8_t*)pool_malloc(testBlockSizes[0]);
 
-	// 	if(testPtrs[i] == NULL)
-	// 	{
-	// 		testFail = true;
-	// 		break;
-	// 	}
-	// }
+		if(testPtrs[i] == NULL)
+		{
+			testFail = true;
+			break;
+		}
+	}
 	
-	// if(testFail == true)
-	// {
-	// 	printf("Test 6 failed!\n");
-	// }
-	// else 
-	// {
-	// 	printf("Test 6 passed!\n");
-	// }
+	if(testFail == true)
+	{
+		printf("Test 6 failed!\n");
+	}
+	else 
+	{
+		printf("Test 6 passed!\n");
+	}
 
 	/////////////////// Test 7: Single block size handles trying to overrun heap
 	printf("Test 7: Single block size handles trying to overrun heap\n");

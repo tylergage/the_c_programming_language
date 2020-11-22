@@ -1,6 +1,6 @@
 #include <pool_alloc.h> 
 
-#if 1
+#if 0
   #define DEBUG_PRINT(a) printf a
 #else
   #define DEBUG_PRINT(a) (void)0
