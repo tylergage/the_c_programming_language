@@ -197,3 +197,8 @@ void ui_concurrency(char* userInput)
 {
 	test_readers_writers();
 }
+
+void ui_queue(char* userInput)
+{
+	queue_test();
+}
