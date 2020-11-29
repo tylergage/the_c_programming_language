@@ -11,5 +11,5 @@ bool queue_init(int size);
 bool queue_push(int element);
 int queue_pop(void);
 int queue_peek(void);
-
+int queue_size(void);
 void queue_test(void);

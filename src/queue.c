@@ -1,6 +1,12 @@
 
 #include "queue.h"
 
+#if 0
+  #define DEBUG_PRINT(a) printf a
+#else
+  #define DEBUG_PRINT(a) (void)0
+#endif
+
 static int queue[MAX_QUEUE_SIZE+1] = {0};
 static int queueSize = 0;
 
@@ -31,25 +37,38 @@ bool queue_init(int size)
 bool queue_push(int element)
 {
 	// Check first that queue is not full
-	if(popIndex - pushIndex == 1)
+	if((popIndex > pushIndex) && (popIndex - pushIndex == 1))
 	{
-		printf("Error: Queue full!!!\n");
+		DEBUG_PRINT(("Error: Queue full!!!\n"));
 		return false;
 	}
-	if(popIndex == 0 && pushIndex == (queueSize-1)) // Boundary case
+	else if(popIndex == 0 && pushIndex == (queueSize-1)) // Boundary case
 	{
-		printf("Error: Queue full!!!\n");
+		DEBUG_PRINT(("Error: Queue full!!!\n"));
 		return false;
 	}
 
-	// Add data to queue
-	queue[pushIndex] = element;
-	pushIndex++;
-	
-	if(pushIndex >= queueSize || pushIndex >= MAX_QUEUE_SIZE)
+	if(pushIndex == -1 && popIndex == -1)
 	{
 		pushIndex = 0;
+		popIndex = 0;
+		queue[pushIndex] = element;
+		DEBUG_PRINT(("PUSH1 : %d pushed at index %d\n", element, pushIndex));
 	}
+	else if(pushIndex == (queueSize-1))
+	{
+		pushIndex = 0;
+		queue[pushIndex] = element;
+		DEBUG_PRINT(("PUSH2 : %d pushed at index %d\n", element, pushIndex));
+	} 
+	else
+	{
+		pushIndex++;
+		queue[pushIndex] = element;
+		DEBUG_PRINT(("PUSH3 : %d pushed at index %d\n", element, pushIndex));
+	}
+
+	DEBUG_PRINT(("PUSH : POP IDX: %d, PUSH IDX: %d\n", popIndex, pushIndex));
 
 	return true;
 }
@@ -58,19 +77,33 @@ int queue_pop(void)
 {
 	int retElement = -1;
 
-	if(pushIndex == popIndex)
+	if(pushIndex == -1 && popIndex == -1)
 	{
-		printf("Error: Queue empty!!!\n");
+		DEBUG_PRINT(("Error: Queue empty!!!\n"));
 		return -1;
 	}
 
-	retElement = queue[popIndex];
-	popIndex++;
-
-	if(popIndex >= queueSize || popIndex >= MAX_QUEUE_SIZE)
+	if(pushIndex == popIndex) // Handle lase element
 	{
+		retElement = queue[popIndex];
+		DEBUG_PRINT(("POP1 : %d popped at index %d\n", retElement, popIndex));
+		pushIndex = -1;
+		popIndex = -1;
+	}
+	else if(popIndex == queueSize-1)
+	{
+		retElement = queue[popIndex];
+		DEBUG_PRINT(("POP2 : %d popped at index %d\n", retElement, popIndex));
 		popIndex = 0;
 	}
+	else
+	{
+		retElement = queue[popIndex];
+		DEBUG_PRINT(("POP3 : %d popped at index %d\n", retElement, popIndex));
+		popIndex++;
+	}
+
+	DEBUG_PRINT(("POP : POP IDX: %d, PUSH IDX: %d\n", popIndex, pushIndex));
 
 	return retElement;
 }
@@ -79,7 +112,7 @@ int queue_peek(void)
 {
 	int retElement = -1;
 
-	if(pushIndex == popIndex)
+	if(pushIndex == -1 && popIndex == -1)
 	{
 		printf("Error: Queue empty!!!\n");
 		return -1;
@@ -107,11 +140,12 @@ void queue_test(void)
 
 	for(int i=0;i<10;i++)
 	{
-		printf("Pop: %d\n", queue_pop());
+		int element = queue_pop();
+		printf("Pop: %d\n", element);
 	}
 
 	// Do one more pop just to verify the queue is empty
-	queue_pop();
+	printf("Pop: %d\n", queue_pop());
 
 }
 
